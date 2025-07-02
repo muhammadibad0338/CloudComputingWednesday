@@ -4,7 +4,7 @@ const SavingsPlanSchema = new mongoose.Schema({
     unitPrice: Number,
     retailPrice: Number,
     term: String,
-}, { _id: true });
+}, { _id: false });
 
 const azureSchema = new mongoose.Schema({
     currencyCode: String,
@@ -31,11 +31,12 @@ const azureSchema = new mongoose.Schema({
         required: false,    // optional (default behavior)
         default: undefined  // optional: omit field if not present
     },
-    ssavingsPlan: {
+    savingsPlan: {
         type: [SavingsPlanSchema],
         required: false, // optional — you can also remove this line
         default: undefined // optional: don't include field if it's not provided
-    }
+    },
+    effectiveStartDate: String,
 }, { timestamps: true });
 
 
