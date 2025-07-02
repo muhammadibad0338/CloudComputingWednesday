@@ -26,7 +26,11 @@ const azureSchema = new mongoose.Schema({
     unitOfMeasure: String,
     type: String,
     isPrimaryMeterRegion: Boolean,
-    armSkuName: String,
+    armSkuName: {
+        type: String,
+        required: false,    // optional (default behavior)
+        default: undefined  // optional: omit field if not present
+    },
     ssavingsPlan: {
         type: [SavingsPlanSchema],
         required: false, // optional — you can also remove this line
