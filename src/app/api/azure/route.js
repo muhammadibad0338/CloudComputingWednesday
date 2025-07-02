@@ -3,45 +3,13 @@ import Azure from "../models/azureModel";
 import { NextResponse } from "next/server";
 import data from './data.json'
 
-export async function POST(request) {
-    try {
-        const { title, description } = await request.json();
-        await connectMongoDB();
-        await Azure.create({ title, description });
-        return NextResponse.json({ message: "Azure Created" }, { status: 201 });
-    } catch (error) {
-        return NextResponse.json({ error: "Failed to create Azure" }, { status: 500 });
-    }
-}
-
-
-// export async function GET() {
-//     try {
-//         const response = await fetch("https://prices.azure.com/api/retail/prices?api-version=2023-01-01-preview");
-
-//         if (!response.ok) {
-//             throw new Error("Failed to fetch Azure pricing");
-//         }
-
-//         const data = await response.json();
-
-//         return NextResponse.json(data, { status: 200 });
-//     } catch (error) {
-//         console.error("Azure API fetch error:", error);
-//         return NextResponse.json(
-//             { error: "Failed to fetch Azure pricing" },
-//             { status: 500 }
-//         );
-//     }
-// }
-
 
 
 
 const PAGE_SIZE = 1000;
 const TOTAL_PAGES = 1000; // 1000 pages × 1000 records = 1,000,000
 
-export async function GET() {
+export async function POST() {
     try {
         await connectMongoDB();
 
