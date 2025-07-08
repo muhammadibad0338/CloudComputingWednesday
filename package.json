@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-pricing": "^3.840.0",
     "@reduxjs/toolkit": "^2.8.2",
     "mongoose": "^8.16.1",
     "next": "15.3.4",

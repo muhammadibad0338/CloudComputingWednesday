@@ -1,7 +1,7 @@
 import connectMongoDB from "../mongodb";
 import Azure from "../models/azureModel";
 import { NextResponse } from "next/server";
-import data from './data.json'
+
 
 
 
