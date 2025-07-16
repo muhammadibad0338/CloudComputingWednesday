@@ -1,11 +1,17 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const vmwareSchema = new mongoose.Schema({
-    sku: String,
+const vmwarePricing = new mongoose.Schema({
+    sku: { type: String, unique: true },
     productFamily: String,
+    serviceCode: String,
+    version: String,
+    publicationDate: Date,
+
+    // Flattened product.attributes
     productgroupid: String,
     brioproductid: String,
     usagetype: String,
+    description: String,
     locationType: String,
     productsubgroup: String,
     iscommitcpsku: String,
@@ -18,17 +24,21 @@ const vmwareSchema = new mongoose.Schema({
     vmwareproductid: String,
     vmwareregion: String,
 
-    // Pricing
-    rateCode: String,
-    description: String,
-    unit: String,
+    // From terms.OnDemand
+    offerTermCode: String,
+    effectiveDate: Date,
+
+    // From priceDimensions
+    priceRateCode: String,
     beginRange: String,
     endRange: String,
-    priceUSD: String,
+    unit: String,
+    pricePerUnitUSD: String,
+    appliesTo: [String],
+    rateCode: String,
 
-    // Term
-    offerTermCode: String,
-    effectiveDate: Date
 }, { timestamps: true });
 
-export default mongoose.models.VmwarePricing || mongoose.model("VmwarePricing", vmwareSchema);
+export default mongoose.models.VmwarePricing || mongoose.model("VmwarePricing", vmwarePricing);
+
+// export default mongoose.models.VmwarePricing || mongoose.model("VmwarePricing", vmwareSchema);

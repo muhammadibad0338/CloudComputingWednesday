@@ -52,14 +52,16 @@ export async function GET() {
             allItems.push(...rawItems);
             nextToken = response.NextToken;
 
+
         } while (nextToken);
 
         // Optional: filter duplicates before insert (based on SKU + rateCode)
-        const filteredItems = allItems.filter(item => item.sku && item.rateCode);
+        // const filteredItems = allItems.filter(item => item.sku && item.rateCode);
 
-        const inserted = await VmwarePricing.insertMany(filteredItems, { ordered: false });
+        const inserted = await VmwarePricing.insertMany(allItems, { ordered: false });
 
         return NextResponse.json({
+            // data: allItems
             message: `${inserted.length} VMware pricing records inserted.`,
         }, { status: 201 });
 
@@ -74,76 +76,43 @@ export async function GET() {
 
 
 function flattenVmwareAwsItem(rawItem) {
-    const item = JSON.parse(rawItem);
-    const product = item.product || {};
-    const attributes = product.attributes || {};
-    const sku = product.sku;
+    const singleSKU = JSON.parse(rawItem);
+    let {
+        product,
+        serviceCode,
+        terms,
+        version,
+        publicationDate
+    } = singleSKU
 
-    const terms = item.terms?.OnDemand || {};
-    const termKey = Object.keys(terms)[0];
-    const term = terms[termKey];
+    let { productFamily, sku, attributes } = product
 
-    const priceDimensionKey = Object.keys(term?.priceDimensions || {})[0];
-    const dimension = term?.priceDimensions?.[priceDimensionKey];
+    // let termsOnDemand = terms?.OnDemand[Object.keys(terms?.OnDemand)[0]]
+
+
+    // let priceDimensions = Object.keys(Object.keys(terms?.OnDemand)[0].priceDimensions)[0]
+
+    // Step 1: Get the first OnDemand term
+    let onDemandTerms = terms?.OnDemand;
+    let firstOnDemandKey = Object.keys(onDemandTerms)[0];
+    let termsOnDemand = onDemandTerms[firstOnDemandKey];
+
+    // Step 2: Get the first price dimension
+    let priceDimensions = termsOnDemand.priceDimensions;
+    let firstPriceKey = Object.keys(priceDimensions)[0];
+    let { pricePerUnit, beginRange, rateCode, appliesTo, endRange, unit } = priceDimensions[firstPriceKey];
 
     return {
+        productFamily,
         sku,
-        productFamily: product.productFamily,
-        productgroupid: attributes.productgroupid,
-        brioproductid: attributes.brioproductid,
-        usagetype: attributes.usagetype,
-        locationType: attributes.locationType,
-        productsubgroup: attributes.productsubgroup,
-        iscommitcpsku: attributes.iscommitcpsku,
-        regionCode: attributes.regionCode,
-        servicecode: attributes.servicecode,
-        chargeid: attributes.chargeid,
-        location: attributes.location,
-        servicename: attributes.servicename,
-        operation: attributes.operation,
-        vmwareproductid: attributes.vmwareproductid,
-        vmwareregion: attributes.vmwareregion,
+        ...attributes,
+        serviceCode,
+        beginRange, rateCode, appliesTo, endRange, unit,
+        effectiveDate: termsOnDemand?.effectiveDate,
+        offerTermCode: termsOnDemand?.offerTermCode,
+        pricePerUnitUSD: pricePerUnit?.USD,
+        version,
+        publicationDate
 
-        rateCode: dimension?.rateCode,
-        description: dimension?.description,
-        unit: dimension?.unit,
-        beginRange: dimension?.beginRange,
-        endRange: dimension?.endRange,
-        priceUSD: dimension?.pricePerUnit?.USD,
-
-        offerTermCode: term?.offerTermCode,
-        effectiveDate: term?.effectiveDate ? new Date(term?.effectiveDate) : null
     };
 }
-
-
-// export async function GET() {
-//     try {
-//         // Define the GetProductsRequest input
-//         const input = {
-//             ServiceCode: "VMwareCloudOnAWS", // required
-
-//             FormatVersion: "aws_v1",         // optional
-//             MaxResults: 100                  // max results per page
-//         };
-
-//         // Create the command
-//         const command = new GetProductsCommand(input);
-
-//         // Send the request
-//         const response = await client.send(command);
-
-//         // Return raw AWS Pricing response
-//         return NextResponse.json({
-//             prices: response.PriceList.map((item) => JSON.parse(item)),
-//             nextToken: response.NextToken,
-//         }, { status: 200 });
-
-//     } catch (error) {
-//         console.error("AWS Pricing API Error:", error);
-//         return NextResponse.json(
-//             { error: "Failed to retrieve VMware Cloud on AWS pricing data." },
-//             { status: 500 }
-//         );
-//     }
-// }
