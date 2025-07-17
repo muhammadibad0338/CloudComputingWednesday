@@ -40,5 +40,3 @@ const vmwarePricing = new mongoose.Schema({
 }, { timestamps: true });
 
 export default mongoose.models.VmwarePricing || mongoose.model("VmwarePricing", vmwarePricing);
-
-// export default mongoose.models.VmwarePricing || mongoose.model("VmwarePricing", vmwareSchema);
