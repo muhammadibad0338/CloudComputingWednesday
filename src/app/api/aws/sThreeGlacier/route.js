@@ -59,9 +59,9 @@ export async function GET() {
         }, { status: 201 });
 
     } catch (error) {
-        console.error("AWS S3 Pricing API Error:", error);
+        console.error("AWS S3 GLACIER Pricing API Error:", error);
         return NextResponse.json(
-            { error: "Failed to retrieve or store S3 Cloud on AWS pricing data." },
+            { error: "Failed to retrieve or store S3 GLACIER Cloud on AWS pricing data." },
             { status: 500 }
         );
     }
