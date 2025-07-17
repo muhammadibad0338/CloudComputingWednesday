@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { PricingClient, GetProductsCommand } from "@aws-sdk/client-pricing";
-import VmwarePricing from '../../models/vmwarePricing';
 import connectMongoDB from '../../mongodb';
-
+import SThreePricing from '../../models/sThreeModel'
 
 
 // Create the client configuration
@@ -41,37 +40,72 @@ export async function GET() {
             });
 
             response = await client.send(command);
-            // const rawItems = response.PriceList.map(flattenVmwareAwsItem);
+            const rawItems = response.PriceList.map(flattenSThreeAwsItem);
 
-            // allItems.push(...rawItems);
-            // nextToken = response.NextToken;
+            allItems.push(...rawItems);
+            nextToken = response.NextToken;
 
 
-        } while (false);
+        } while (nextToken);
 
         // Optional: filter duplicates before insert (based on SKU + rateCode)
         // const filteredItems = allItems.filter(item => item.sku && item.rateCode);
 
-        // const inserted = await VmwarePricing.insertMany(allItems, { ordered: false });
+        const inserted = await SThreePricing.insertMany(allItems, { ordered: false });
 
-        const rawItems = response.PriceList.map(flattenVmwareAwsItem);
 
         return NextResponse.json({
-            data: rawItems,
-            // message: `${inserted.length} VMware pricing records inserted.`,
+            message: `${inserted.length} S3 pricing records inserted.`,
         }, { status: 201 });
 
     } catch (error) {
-        console.error("AWS Pricing API Error:", error);
+        console.error("AWS S3 Pricing API Error:", error);
         return NextResponse.json(
-            { error: "Failed to retrieve or store VMware Cloud on AWS pricing data." },
+            { error: "Failed to retrieve or store S3 Cloud on AWS pricing data." },
             { status: 500 }
         );
     }
 }
 
 
-function flattenVmwareAwsItem(rawItem) {
+function flattenSThreeAwsItem(rawItem) {
     const singleSKU = JSON.parse(rawItem);
-    return singleSKU
+    let {
+        product,
+        serviceCode,
+        terms,
+        version,
+        publicationDate
+    } = singleSKU
+
+    let { productFamily, sku, attributes } = product
+
+    // let termsOnDemand = terms?.OnDemand[Object.keys(terms?.OnDemand)[0]]
+
+
+    // let priceDimensions = Object.keys(Object.keys(terms?.OnDemand)[0].priceDimensions)[0]
+
+    // Step 1: Get the first OnDemand term
+    let onDemandTerms = terms?.OnDemand;
+    let firstOnDemandKey = Object.keys(onDemandTerms)[0];
+    let termsOnDemand = onDemandTerms[firstOnDemandKey];
+
+    // Step 2: Get the first price dimension
+    let priceDimensions = termsOnDemand.priceDimensions;
+    let firstPriceKey = Object.keys(priceDimensions)[0];
+    let { pricePerUnit, beginRange, rateCode, appliesTo, endRange, unit, description } = priceDimensions[firstPriceKey];
+
+    return {
+        productFamily,
+        sku,
+        ...attributes,
+        serviceCode,
+        beginRange, rateCode, description, appliesTo, endRange, unit,
+        effectiveDate: termsOnDemand?.effectiveDate,
+        offerTermCode: termsOnDemand?.offerTermCode,
+        pricePerUnitUSD: pricePerUnit?.USD,
+        version,
+        publicationDate
+
+    };
 }
