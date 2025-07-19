@@ -69,7 +69,6 @@ export async function GET() {
 
 function flattenSThreeAwsItem(rawItem) {
     const singleSKU = JSON.parse(rawItem);
-    return singleSKU
     let {
         product,
         serviceCode,
@@ -80,10 +79,6 @@ function flattenSThreeAwsItem(rawItem) {
 
     let { productFamily, sku, attributes } = product
 
-    // let termsOnDemand = terms?.OnDemand[Object.keys(terms?.OnDemand)[0]]
-
-
-    // let priceDimensions = Object.keys(Object.keys(terms?.OnDemand)[0].priceDimensions)[0]
 
     // Step 1: Get the first OnDemand term
     let onDemandTerms = terms?.OnDemand;
@@ -105,7 +100,42 @@ function flattenSThreeAwsItem(rawItem) {
         offerTermCode: termsOnDemand?.offerTermCode,
         pricePerUnitUSD: pricePerUnit?.USD,
         version,
-        publicationDate
+        publicationDate,
+        reserved: transformReservedPricing(terms?.Reserved || null)
 
     };
+}
+
+function transformReservedPricing(reservedTerms) {
+    const transformed = [];
+
+    if (!reservedTerms) return transformed;
+
+    for (const reservedKey of Object.keys(reservedTerms)) {
+        const reserved = reservedTerms[reservedKey];
+        const { offerTermCode, effectiveDate, termAttributes = {} } = reserved;
+
+        const priceDimensions = reserved.priceDimensions || {};
+
+        for (const pdKey of Object.keys(priceDimensions)) {
+            const pd = priceDimensions[pdKey];
+
+            transformed.push({
+                unit: pd.unit || null,
+                endRange: pd.endRange || null,
+                description: pd.description || "",
+                appliesTo: pd.appliesTo || [],
+                rateCode: pd.rateCode,
+                beginRange: pd.beginRange || null,
+                pricePerUnitUSD: pd.pricePerUnit?.USD || null,
+                offerTermCode: offerTermCode,
+                effectiveDate: new Date(effectiveDate),
+                termAttributes_LeaseContractLength: termAttributes.LeaseContractLength || null,
+                termAttributes_OfferingClass: termAttributes.OfferingClass || null,
+                termAttributes_PurchaseOption: termAttributes.PurchaseOption || null,
+            });
+        }
+    }
+
+    return transformed;
 }
