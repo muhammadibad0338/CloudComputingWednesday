@@ -20,7 +20,7 @@ const client = new PricingClient(config);
 
 
 
-export async function GET() {
+export async function POST() {
     try {
         await connectMongoDB();
 
@@ -49,12 +49,12 @@ export async function GET() {
         } while (nextToken);
 
 
-        const inserted = await RDSPricing.insertMany(allItems, { ordered: false });
+        // const inserted = await RDSPricing.insertMany(allItems, { ordered: false });
 
 
         return NextResponse.json({
-            // data: allItems,
-            message: `${inserted.length} AmazonRDS pricing records inserted.`,
+            data: allItems,
+            // message: `${inserted.length} AmazonRDS pricing records inserted.`,
         }, { status: 201 });
 
     } catch (error) {

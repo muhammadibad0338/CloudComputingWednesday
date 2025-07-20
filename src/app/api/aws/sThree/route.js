@@ -20,7 +20,7 @@ const client = new PricingClient(config);
 
 
 
-export async function GET() {
+export async function POST() {
     try {
         await connectMongoDB();
 
