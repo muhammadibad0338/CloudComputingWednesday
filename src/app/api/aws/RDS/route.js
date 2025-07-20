@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { PricingClient, GetProductsCommand } from "@aws-sdk/client-pricing";
 import connectMongoDB from '../../mongodb';
-
+import RDSPricing from '../../models/rdsModel'
 
 
 // Create the client configuration
@@ -46,15 +46,15 @@ export async function GET() {
             nextToken = response.NextToken;
 
 
-        } while (false);
+        } while (nextToken);
 
 
-        // const inserted = await SThreePricing.insertMany(allItems, { ordered: false });
+        const inserted = await RDSPricing.insertMany(allItems, { ordered: false });
 
 
         return NextResponse.json({
-            data: allItems,
-            // message: `${inserted.length} AmazonRDS pricing records inserted.`,
+            // data: allItems,
+            message: `${inserted.length} AmazonRDS pricing records inserted.`,
         }, { status: 201 });
 
     } catch (error) {
