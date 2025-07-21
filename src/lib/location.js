@@ -1,3 +1,6 @@
+
+// DUMMY DATA
+
 const awsRegionsWithCountries = [
   { regionCode: "us-east-1", country: "USA (N. Virginia)" },
   { regionCode: "us-east-2", country: "USA (Ohio)" },

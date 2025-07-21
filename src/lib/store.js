@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import AzureSlice from './features/azureSlice'
+import AzureSlice from './slices/azureSlice'
 
 
 
