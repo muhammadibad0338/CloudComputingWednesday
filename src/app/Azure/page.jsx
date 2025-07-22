@@ -3,9 +3,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { getAzureData } from '@/lib/actions/azureActions';
-import { Box, colors, Container, Grid } from '@mui/material';
+import { Box, colors, Container, Grid, Typography } from '@mui/material';
 import { makeStyles } from "@mui/styles";
 import { styled } from '@mui/system';
+import AzureTable from './Components/AzureTable';
 
 
 
@@ -30,8 +31,8 @@ export default function AzurePage() {
 
     const { azure, loading, error } = useSelector((state) => state.azure);
     const [paramData, setParamData] = useState({
-        'page': 2,
-        'limit': 20
+        'page': 1,
+        'limit': 25
     })
 
     useEffect(() => {
@@ -45,11 +46,13 @@ export default function AzurePage() {
 
 
     return (
-        <MainCntnr container >
-
-            <Grid size={{xs:12}} >
-                <h2>Azure Pricing</h2>
-                <pre>{JSON.stringify(azure, null, 2)}</pre>
+        <MainCntnr container sx={{ backgroundColor: '#E7EAEE' }} px={4} pb={4} >
+            <Grid size={{ xs: 12 }} >
+                <Typography variant='h4' >Azure Pricing </Typography>
+                {/* <pre>{JSON.stringify(azure, null, 2)}</pre> */}
+            </Grid>
+            <Grid size={{ xs: 12 }} >
+                <AzureTable/>
             </Grid>
         </MainCntnr>
     );
