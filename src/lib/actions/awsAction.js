@@ -1,21 +1,22 @@
 import axiosClient from '../axiosClient';
-import { fetchAzureData, setLoading, setError } from '../slices/azureSlice';
+import { fetchAwsVmwareData, fetchAwsRdsData, fetchAwsSthreeData, resetState, setLoading, setError } from '../slices/awsSlice';
 
 
-export const getAzureData = (queryParams = {}) => async (dispatch) => {
+
+export const getAwsVMwareData = (queryParams = {}) => async (dispatch) => {
     try {
         dispatch(setLoading(true));
 
 
         let response = await axiosClient({
             method: "GET",
-            url: `/api/azure`,
+            url: `/api/aws/vmware`,
             params: queryParams,
         });
 
         if (response.status === 200) {
-            dispatch(fetchAzureData(response.data));
-            // console.log(response?.data,'data')
+            dispatch(fetchAwsVmwareData(response.data));
+            console.log(response?.data, 'data')
         } else {
             dispatch(setError("Unexpected response status: " + response.status));
         }
