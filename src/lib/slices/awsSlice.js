@@ -7,6 +7,7 @@ const initialState = {
     awsVmware: {},
     awsRds: {},
     awsSthree: {},
+    awsSthreeGlacier: {},
     loading: false,
     error: null,
 };
@@ -19,14 +20,21 @@ export const AwsSlice = createSlice({
             state.awsVmware = action.payload !== undefined ? action.payload : {};
             state.awsRds = {};
             state.awsSthree = {};
+            state.awsSthreeGlacier = {};
         },
         fetchAwsRdsData: (state, action) => {
             state.awsRds = action.payload !== undefined ? action.payload : {};
             state.awsVmware = {};
             state.awsSthree = {};
+            state.awsSthreeGlacier = {};
         },
         fetchAwsSthreeData: (state, action) => {
             state.awsSthree = action.payload !== undefined ? action.payload : {};
+            state.awsVmware = {};
+            state.awsRds = {};
+        },
+        fetchAwsSthreeGlacierData: (state, action) => {
+            state.awsSthreeGlacier = action.payload !== undefined ? action.payload : {};
             state.awsVmware = {};
             state.awsRds = {};
         },
@@ -34,6 +42,7 @@ export const AwsSlice = createSlice({
             state.awsVmware = {};
             state.awsRds = {};
             state.awsSthree = {};
+            state.awsSthreeGlacier = {};
             state.loading = false;
             state.error = null;
         },
