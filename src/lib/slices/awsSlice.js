@@ -56,5 +56,5 @@ export const AwsSlice = createSlice({
     },
 });
 
-export const { fetchAwsVmwareData, fetchAwsRdsData, fetchAwsSthreeData, resetState, setLoading, setError } = AwsSlice.actions;
+export const { fetchAwsVmwareData, fetchAwsRdsData, fetchAwsSthreeData, fetchAwsSthreeGlacierData, resetState, setLoading, setError } = AwsSlice.actions;
 export default AwsSlice.reducer;
