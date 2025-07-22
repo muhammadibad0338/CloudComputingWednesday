@@ -116,3 +116,73 @@ function flattenVmwareAwsItem(rawItem) {
 
     };
 }
+
+
+
+// GET API with pagination
+
+export async function GET(req) {
+    try {
+        await connectMongoDB();
+
+        const { searchParams } = new URL(req.url);
+        const page = parseInt(searchParams.get('page')) || 1;
+        const limit = parseInt(searchParams.get('limit')) || 25;
+        const skip = (page - 1) * limit;
+
+        const ALLOWED_FILTERS = [
+            "sku",
+            "productFamily",
+            "serviceCode",
+            "usagetype",
+            "description",
+            "locationType",
+            "productsubgroup",
+            "regionCode",
+            "location",
+            "servicename",
+            "operation",
+            "unit",
+            "beginRange",
+            "endRange",
+        ];
+
+        const mongoFilter = {};
+
+        for (const key of searchParams.keys()) {
+            if (ALLOWED_FILTERS.includes(key)) {
+                const value = searchParams.get(key);
+                if (value.includes(',')) {
+                    // Support multiple values as array (e.g., ?armRegionName=westus,eastus)
+                    mongoFilter[key] = { $in: value.split(',').map(v => v.trim()) };
+                } else {
+                    mongoFilter[key] = value.trim();
+                }
+            }
+        }
+
+        const [data, total] = await Promise.all([
+            VmwarePricing.find(mongoFilter).skip(skip).limit(limit),
+            VmwarePricing.countDocuments(mongoFilter),
+        ]);
+
+        const totalPages = Math.ceil(total / limit);
+
+        return NextResponse.json({
+            success: true,
+            // filtersUsed: mongoFilter,
+            currentPage: page,
+            totalPages,
+            totalItems: total,
+            perPage: limit,
+            data,
+        }, { status: 200 });
+
+    } catch (error) {
+        console.error('GET /api/aws/vmware error:', error);
+        return NextResponse.json({
+            success: false,
+            message: 'Server Error',
+        }, { status: 500 });
+    }
+}

@@ -82,7 +82,7 @@ const AzureTable = () => {
     return (
         <>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-                <TableContainer sx={{ maxHeight: '50vh' }} >
+                <TableContainer sx={{ maxHeight: '40vh' }} >
                     <Table stickyHeader  >
                         <TableHead sx={{ '& th': { backgroundImage: 'linear-gradient(rgba(76, 207, 248, 1), rgba(74, 75, 227, 1),rgba(35, 52, 156, 1)) !important',border:'none'  } }}  >
                             <TableRow className={classes.tableHead} >

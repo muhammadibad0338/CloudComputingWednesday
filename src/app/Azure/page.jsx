@@ -32,7 +32,7 @@ export default function AzurePage() {
     const { azure, loading, error } = useSelector((state) => state.azure);
     const [paramData, setParamData] = useState({
         'page': 1,
-        'limit': 25
+        'limit': 100
     })
 
     useEffect(() => {
@@ -46,10 +46,9 @@ export default function AzurePage() {
 
 
     return (
-        <MainCntnr container sx={{ backgroundColor: '#E7EAEE' }} px={4} pb={4} >
-            <Grid size={{ xs: 12 }} >
+        <MainCntnr container  >
+            <Grid size={{ xs: 12 }} mb={2} >
                 <Typography variant='h4' >Azure Pricing </Typography>
-                {/* <pre>{JSON.stringify(azure, null, 2)}</pre> */}
             </Grid>
             <Grid size={{ xs: 12 }} >
                 <AzureTable/>

@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Image from "next/image";
 import AzurePage from "./Azure/page";
-
+import AwsPage from "./Aws/Page"
 
 
 import { Box, colors, Container, Grid } from '@mui/material';
@@ -22,7 +22,7 @@ export default function Home() {
 
   return (
     <Container maxWidth='fl'  >
-      <Grid container >
+      <Grid container sx={{ backgroundColor: '#E7EAEE' }} >
         <Grid size={{ xs: 12 }}   >
           <Box  >
             <WarningSnackbar
@@ -35,8 +35,11 @@ export default function Home() {
             />
           </Box>
         </Grid>
-        <Grid size={{ xs: 12 }}   >
+        <Grid size={{ xs: 12 }} mt={2}  >
           <AzurePage />
+        </Grid>
+        <Grid size={{ xs: 12 }} >
+          <AwsPage />
         </Grid>
       </Grid>
     </Container>

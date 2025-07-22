@@ -63,43 +63,6 @@ export async function POST() {
 
 // GET API with pagination
 
-// export async function GET(req) {
-//     try {
-//         await connectMongoDB();
-
-//         const { searchParams } = new URL(req.url);
-//         const page = parseInt(searchParams.get('page')) || 1;
-//         const limit = parseInt(searchParams.get('limit')) || 25;
-
-//         const skip = (page - 1) * limit;
-
-//         // Fetch data and total count
-//         const [data, total] = await Promise.all([
-//             Azure.find().skip(skip).limit(limit),
-//             Azure.countDocuments()
-//         ]);
-
-//         const totalPages = Math.ceil(total / limit);
-
-//         return NextResponse.json({
-//             success: true,
-//             currentPage: page,
-//             totalPages,
-//             totalItems: total,
-//             perPage: limit,
-//             data,
-//         }, { status: 200 });
-
-//     } catch (error) {
-//         console.error('GET /api/azure error:', error);
-//         return NextResponse.json({
-//             success: false,
-//             message: 'Server Error',
-//         }, { status: 500 });
-//     }
-// }
-
-
 export async function GET(req) {
     try {
         await connectMongoDB();
