@@ -47,7 +47,7 @@ const Page = () => {
 
 
     return (
-        <div>Page</div>
+        <div>VMware Page</div>
     )
 }
 

@@ -9,6 +9,8 @@ import { styled } from '@mui/system';
 
 
 import VMWarePage from "./VMware/Page"
+import RdsPage from "./Rds/page"
+import SThreePage from "./SThree/page"
 
 
 const MainCntnr = styled(Grid)(({ theme }) => ({
@@ -20,12 +22,18 @@ const MainCntnr = styled(Grid)(({ theme }) => ({
     backdropFilter: 'blur(10px)',
 }));
 
+let AwsServiceComponent = {
+    'VMWARE' : <VMWarePage/>,
+    'RDBMS' : <RdsPage/>,
+    'STORAGE' : <SThreePage/>,
+}
+
 
 
 
 const Page = () => {
 
-
+    const { comparisionService } = useSelector((state) => state.comparisionFilter);
 
 
 
@@ -36,7 +44,7 @@ const Page = () => {
                 <Typography variant='h4' >AWS Pricing </Typography>
             </Grid>
             <Grid size={{ xs: 12 }} >
-                <VMWarePage />
+                { AwsServiceComponent[comparisionService] }
             </Grid>
 
         </MainCntnr>
