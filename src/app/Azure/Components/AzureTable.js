@@ -100,6 +100,9 @@ const AzureTable = () => {
                                     Service Name
                                 </TableCell>
                                 <TableCell className={classes.tableCell}>
+                                    Product Name
+                                </TableCell>
+                                <TableCell className={classes.tableCell}>
                                     Type
                                 </TableCell>
                                 <TableCell className={classes.tableCell}>
@@ -126,6 +129,9 @@ const AzureTable = () => {
                                             </TableCell>
                                             <TableCell>
                                                 <Typography className={classes.tableCellBody} >{service?.serviceName}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography className={classes.tableCellBody} >{service?.productName}</Typography>
                                             </TableCell>
                                             <TableCell>
                                                 <Typography className={classes.tableCellBody} >{service?.type}</Typography>

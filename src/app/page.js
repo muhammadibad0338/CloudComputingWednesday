@@ -51,12 +51,12 @@ export default function Home() {
         <Grid size={{ xs: 12 }}   >
           <ComparisionSelect />
         </Grid>
-        <Grid size={{ xs: 12 }} mt={2}  >
+        {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2}  >
           <AzurePage />
-        </Grid>
-        <Grid size={{ xs: 12 }} mt={2} >
+        </Grid>}
+        {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2} >
           <AwsPage />
-        </Grid>
+        </Grid>}
       </Grid>
     </Container>
   );
