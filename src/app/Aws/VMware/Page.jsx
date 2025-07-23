@@ -3,7 +3,7 @@ import React from 'react'
 import { styled } from '@mui/system';
 import { makeStyles } from "@mui/styles";
 
-import { getAwsVMwareData, getAwsRdsData, getAwsSthreeData, getAwsSthreeGlacierData } from '@/lib/actions/awsAction';
+import { getAwsVMwareData,} from '@/lib/actions/awsAction';
 
 import { Box, colors, Container, Grid, Typography } from '@mui/material';
 
@@ -37,9 +37,6 @@ const Page = () => {
 
     useEffect(() => {
         dispatch(getAwsVMwareData(paramData));
-        // dispatch(getAwsRdsData(paramData));
-        // dispatch(getAwsSthreeData(paramData));
-        // dispatch(getAwsSthreeGlacierData(paramData));
     }, [dispatch, paramData]);
 
 

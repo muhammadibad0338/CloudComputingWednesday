@@ -33,17 +33,6 @@ export default function AzurePage() {
     const { comparisionService, filterloading, page, limit } = useSelector((state) => state.comparisionFilter);
 
 
-    // const [paramData, setParamData] = useState({
-    //     'page': page,
-    //     'limit': limit,
-
-    // })
-
-    // useEffect(() => {
-    //     dispatch(getAzureData(paramData));
-    // }, [dispatch, page, limit]);
-
-
     // Map comparisionService to actual filters
     useEffect(() => {
         const mappedData = { page, limit };
