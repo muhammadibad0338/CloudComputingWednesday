@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
         cursor: 'pointer',
         // backgroundImage: 'linear-gradient(rgba(76, 207, 248, 1), rgba(74, 75, 227, 1),rgba(35, 52, 156, 1)) !important',
     },
-    
+
 }));
 
 
@@ -71,23 +71,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 
-
-
-const AzureTable = () => {
+const VMwareTable = () => {
 
     const classes = useStyles();
 
-    const { azure, loading, error } = useSelector((state) => state.azure);
+    const { awsVmware, loading, error } = useSelector((state) => state.aws);
+    const { comparisionService, filterloading, page, limit } = useSelector((state) => state.comparisionFilter);
 
     return (
         <>
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: '40vh' }} >
                     <Table stickyHeader  >
-                        <TableHead sx={{ '& th': { backgroundImage: 'linear-gradient(rgba(76, 207, 248, 1), rgba(74, 75, 227, 1),rgba(35, 52, 156, 1)) !important',border:'none'  } }}  >
+                        <TableHead sx={{ '& th': { backgroundImage: 'linear-gradient(rgba(76, 207, 248, 1), rgba(74, 75, 227, 1),rgba(35, 52, 156, 1)) !important', border: 'none' } }}  >
                             <TableRow className={classes.tableHead} >
                                 <TableCell className={classes.tableCell} >
                                     SKU ID
+                                    {/* Product ID */}
                                 </TableCell>
                                 <TableCell className={classes.tableCell}>
                                     Region
@@ -114,32 +114,36 @@ const AzureTable = () => {
                         </TableHead>
                         <TableBody>
                             {
-                                azure?.data?.map((service, ind) => {
+                                awsVmware?.data?.map((service, ind) => {
                                     return (
                                         <StyledTableRow key={ind}  >
                                             <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.skuId}</Typography>
+                                                <Typography className={classes.tableCellBody} >{service?.sku}</Typography>
                                             </TableCell>
                                             <TableCell >
-                                                <Typography className={classes.tableCellBody} >{service?.armRegionName}</Typography>
+                                                <Typography className={classes.tableCellBody} >{service?.regionCode}</Typography>
                                             </TableCell>
                                             <TableCell>
                                                 <Typography className={classes.tableCellBody} >{service?.location}</Typography>
                                             </TableCell>
                                             <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.serviceName}</Typography>
+                                                <Typography className={classes.tableCellBody} >{service?.servicename}</Typography>
                                             </TableCell>
                                             <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.productName}</Typography>
+                                                <Typography className={classes.tableCellBody} >{service?.productFamily}</Typography>
                                             </TableCell>
                                             <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.type}</Typography>
+                                                <Typography className={classes.tableCellBody} >{service?.usagetype}</Typography>
                                             </TableCell>
                                             <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.unitOfMeasure}</Typography>
+                                                <Typography className={classes.tableCellBody} >{service?.unit}</Typography>
                                             </TableCell>
                                             <TableCell  >
-                                                <Typography className={classes.tableCellBody} >{service?.unitPrice}</Typography>
+                                                <Typography className={classes.tableCellBody} >
+                                                    {Number(service?.pricePerUnitUSD) > 0
+                                                        ? Number(service?.pricePerUnitUSD).toFixed(6)
+                                                        : 'Zero-rated'}
+                                                </Typography>
                                             </TableCell>
                                         </StyledTableRow>
                                     )
@@ -153,4 +157,4 @@ const AzureTable = () => {
     )
 }
 
-export default AzureTable
+export default VMwareTable

@@ -129,12 +129,12 @@ export async function PUT(req) {
     try {
         await connectMongoDB();
 
-        const uniqueServices = await Azure.distinct("serviceName");
-        const uniqueProducts = await Azure.distinct("productName");
+        const uniqueServices = await Azure.distinct("type");
+        const uniqueProducts = await Azure.distinct("unitOfMeasure");
 
         return NextResponse.json({
-            services: uniqueServices,
-            // products: uniqueProducts
+            type: uniqueServices,
+            unitOfMeasure: uniqueProducts
         }, { status: 200 });
 
     } catch (err) {
@@ -143,4 +143,17 @@ export async function PUT(req) {
             error: "Failed to fetch unique service and product names."
         }, { status: 500 });
     }
+}
+
+
+function mapAwsToAzureType(awsItem) {
+    const term = awsItem.offerTermCode?.toUpperCase() || "";
+    const usage = awsItem.usagetype?.toLowerCase() || "";
+    const desc = awsItem.description?.toLowerCase() || "";
+
+    if (term === 'JRTCKXETXF') return 'Consumption';
+    if (/ri[1-5]/i.test(term) || ['0006P', 'B63B'].includes(term)) return 'Reservation';
+    if (usage.includes('devtest') || desc.includes('devtest')) return 'DevTestConsumption';
+
+    return 'Consumption'; // fallback default
 }
