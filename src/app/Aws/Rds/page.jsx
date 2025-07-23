@@ -3,12 +3,13 @@ import React from 'react'
 import { styled } from '@mui/system';
 import { makeStyles } from "@mui/styles";
 
-import {  getAwsRdsData,  } from '@/lib/actions/awsAction';
+import { getAwsRdsData, } from '@/lib/actions/awsAction';
 
 import { Box, colors, Container, Grid, Typography } from '@mui/material';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import RdsTable from './Components/RdsTable';
 
 const MainCntnr = styled(Grid)(({ theme }) => ({
     padding: '24px 24px 24px 24px',
@@ -45,7 +46,9 @@ const Page = () => {
 
 
     return (
-        <div>RDS Page</div>
+        <>
+            <RdsTable />
+        </>
     )
 }
 
