@@ -4,10 +4,14 @@ import Image from "next/image";
 import AzurePage from "./Azure/page";
 import AwsPage from "./Aws/Page"
 
+import { setServiceMainFilter } from '@/lib/slices/filtersSlice';
 
-import { Box, colors, Container, Grid } from '@mui/material';
+import { Box, colors, Container, Grid, OutlinedInput, MenuItem, Select } from '@mui/material';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import { styled } from '@mui/system';
+
+import { useDispatch, useSelector } from 'react-redux';
+import ComparisionSelect from './Components/ComparisionSelectBox';
 
 
 const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
@@ -15,9 +19,18 @@ const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
 }));
 
 
+
+
 export default function Home() {
 
+  const dispatch = useDispatch();
+  const { comparisionService, loading, error } = useSelector((state) => state.comparisionFilter);
+
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(true)
+
+
+
+
 
 
   return (
@@ -34,6 +47,9 @@ export default function Home() {
                             All prices are subject to the additional terms outlined on the official pricing and service pages"
             />
           </Box>
+        </Grid>
+        <Grid size={{ xs: 12 }}   >
+          <ComparisionSelect />
         </Grid>
         <Grid size={{ xs: 12 }} mt={2}  >
           <AzurePage />
