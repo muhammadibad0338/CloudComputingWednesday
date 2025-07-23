@@ -30,14 +30,35 @@ export default function AzurePage() {
 
 
     const { azure, loading, error } = useSelector((state) => state.azure);
-    const [paramData, setParamData] = useState({
-        'page': 1,
-        'limit': 100
-    })
+    const { comparisionService, filterloading, page, limit } = useSelector((state) => state.comparisionFilter);
 
+
+    // const [paramData, setParamData] = useState({
+    //     'page': page,
+    //     'limit': limit,
+
+    // })
+
+    // useEffect(() => {
+    //     dispatch(getAzureData(paramData));
+    // }, [dispatch, page, limit]);
+
+
+    // Map comparisionService to actual filters
     useEffect(() => {
-        dispatch(getAzureData(paramData));
-    }, [dispatch, paramData]);
+        const mappedData = { page, limit };
+
+        if (comparisionService === 'VMWARE') {
+            mappedData.serviceName = 'Virtual Machines';
+        } else if (comparisionService === 'RDBMS') {
+            mappedData.serviceName = 'SQL Database';
+        } else if (comparisionService === 'STORAGE') {
+            mappedData.productName = 'Blob Storage';
+        }
+
+        dispatch(getAzureData(mappedData));
+
+    }, [comparisionService, page, limit])
 
 
     if (loading || Object.keys(azure).length == 0) return <div>Loading...</div>;
@@ -51,7 +72,7 @@ export default function AzurePage() {
                 <Typography variant='h4' >Azure Pricing </Typography>
             </Grid>
             <Grid size={{ xs: 12 }} >
-                <AzureTable/>
+                <AzureTable />
             </Grid>
         </MainCntnr>
     );

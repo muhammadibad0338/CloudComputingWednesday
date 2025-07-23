@@ -28,10 +28,11 @@ const Page = () => {
 
 
     const { awsVmware, loading, error } = useSelector((state) => state.aws);
+    const { comparisionService, filterloading, page, limit } = useSelector((state) => state.comparisionFilter);
 
     const [paramData, setParamData] = useState({
-        'page': 1,
-        'limit': 25
+        'page': page,
+        'limit': limit,
     })
 
     useEffect(() => {

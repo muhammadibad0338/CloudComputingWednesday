@@ -5,8 +5,10 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     comparisionService: '',
-    loading: false,
+    filterloading: false,
     error: null,
+    page: 1,
+    limit: 100
 };
 
 export const ServicesFilterSlice = createSlice({
@@ -18,18 +20,24 @@ export const ServicesFilterSlice = createSlice({
         },
         resetState: (state) => {
             state.azure = {};
-            state.loading = false;
+            state.filterloading = false;
             state.error = null;
         },
+        setPage: (state, action) => {
+            state.page = action.payload;
+        },
+        setLimit: (state, action) => {
+            state.limit = action.payload;
+        },
         setLoading: (state, action) => {
-            state.loading = action.payload;
+            state.filterloading = action.payload;
         },
         setError: (state, action) => {
             state.error = action.payload;
-            state.loading = false;
+            state.filterloading = false;
         },
     },
 });
 
-export const { setServiceMainFilter, resetState, setLoading, setError } = ServicesFilterSlice.actions;
+export const { setServiceMainFilter, resetState, setLoading, setError, setPage, setLimit } = ServicesFilterSlice.actions;
 export default ServicesFilterSlice.reducer;

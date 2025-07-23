@@ -75,6 +75,7 @@ export async function GET(req) {
         const ALLOWED_FILTERS = [
             'armRegionName',
             'productName',
+            'serviceName',
             'serviceFamily',
             'priceType',
             'currencyCode',
@@ -119,6 +120,27 @@ export async function GET(req) {
         return NextResponse.json({
             success: false,
             message: 'Server Error',
+        }, { status: 500 });
+    }
+}
+
+// For Filtering
+export async function PUT(req) {
+    try {
+        await connectMongoDB();
+
+        const uniqueServices = await Azure.distinct("serviceName");
+        const uniqueProducts = await Azure.distinct("productName");
+
+        return NextResponse.json({
+            services: uniqueServices,
+            // products: uniqueProducts
+        }, { status: 200 });
+
+    } catch (err) {
+        console.error("❌ Error fetching services and products:", err);
+        return NextResponse.json({
+            error: "Failed to fetch unique service and product names."
         }, { status: 500 });
     }
 }

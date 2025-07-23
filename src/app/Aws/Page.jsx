@@ -23,9 +23,9 @@ const MainCntnr = styled(Grid)(({ theme }) => ({
 }));
 
 let AwsServiceComponent = {
-    'VMWARE' : <VMWarePage/>,
-    'RDBMS' : <RdsPage/>,
-    'STORAGE' : <SThreePage/>,
+    'VMWARE': <VMWarePage />,
+    'RDBMS': <RdsPage />,
+    'STORAGE': <SThreePage />,
 }
 
 
@@ -33,7 +33,7 @@ let AwsServiceComponent = {
 
 const Page = () => {
 
-    const { comparisionService } = useSelector((state) => state.comparisionFilter);
+    const { comparisionService, filterloading, page, limit } = useSelector((state) => state.comparisionFilter);
 
 
 
@@ -44,7 +44,7 @@ const Page = () => {
                 <Typography variant='h4' >AWS Pricing </Typography>
             </Grid>
             <Grid size={{ xs: 12 }} >
-                { AwsServiceComponent[comparisionService] }
+                {AwsServiceComponent[comparisionService]}
             </Grid>
 
         </MainCntnr>
