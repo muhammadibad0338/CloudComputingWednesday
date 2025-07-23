@@ -35,7 +35,7 @@ export default function Home() {
 
   return (
     <Container maxWidth='fl'  >
-      <Grid container sx={{ backgroundColor: '#E7EAEE' }} >
+      <Grid container >
         <Grid size={{ xs: 12 }}   >
           <Box  >
             <WarningSnackbar
@@ -54,7 +54,7 @@ export default function Home() {
         {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2}  >
           <AzurePage />
         </Grid>}
-        {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2} >
+        {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2} mb={2} >
           <AwsPage />
         </Grid>}
       </Grid>
