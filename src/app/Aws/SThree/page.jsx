@@ -18,7 +18,7 @@ const MainCntnr = styled(Grid)(({ theme }) => ({
     boxShadow: '0px 4px 12px 0px rgba(0, 0, 0, 0.25)',
     backdropFilter: 'blur(10px)',
 }));
-
+import SThreeTable from './Components/SThreeTable';
 
 
 
@@ -46,7 +46,9 @@ const Page = () => {
 
 
     return (
-        <div>SThree Page</div>
+        <>
+            <SThreeTable />
+        </>
     )
 }
 
