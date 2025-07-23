@@ -2,7 +2,7 @@ import connectMongoDB from "../mongodb";
 import Azure from "../models/azureModel";
 import { NextResponse } from "next/server";
 
-
+import mongoose, { Schema } from "mongoose";
 
 
 
@@ -124,18 +124,136 @@ export async function GET(req) {
     }
 }
 
+
+
 // For Filtering
 export async function PUT(req) {
     try {
         await connectMongoDB();
 
-        const uniqueServices = await Azure.distinct("type");
-        const uniqueProducts = await Azure.distinct("unitOfMeasure");
+        // const uniqueServices = await Azure.distinct("armRegionName");
+        // const uniqueProducts = await Azure.distinct("location");
 
-        return NextResponse.json({
-            type: uniqueServices,
-            unitOfMeasure: uniqueProducts
-        }, { status: 200 });
+        const azureRegionCountries = [
+            { code: "", countryName: "Unknown" },
+            { code: "Asia", countryName: "Asia" },
+            { code: "Azure Stack", countryName: "Global" },
+            { code: "Azure Stack US Gov", countryName: "USA" },
+            { code: "Europe", countryName: "Europe" },
+            { code: "Global", countryName: "Global" },
+            { code: "India", countryName: "India" },
+            { code: "Intercontinental", countryName: "Global" },
+            { code: "Middle East And Africa", countryName: "Middle East & Africa" },
+            { code: "North America", countryName: "North America" },
+            { code: "Oceania", countryName: "Oceania" },
+            { code: "South America", countryName: "South America" },
+            { code: "US Gov", countryName: "USA" },
+            { code: "US Gov Zone 1", countryName: "USA" },
+            { code: "US Gov Zone 2", countryName: "USA" },
+            { code: "Zone 1", countryName: "USA" },
+            { code: "Zone 2", countryName: "USA" },
+            { code: "Zone 3", countryName: "USA" },
+            { code: "Zone 4", countryName: "USA" },
+            { code: "Zone 5", countryName: "USA" },
+            { code: "Zone 6", countryName: "USA" },
+            { code: "Zone 7", countryName: "USA" },
+            { code: "Zone 8", countryName: "USA" },
+            { code: "attatlanta1", countryName: "USA" },
+            { code: "attdallas1", countryName: "USA" },
+            { code: "attdetroit1", countryName: "USA" },
+            { code: "attnewyork1", countryName: "USA" },
+            { code: "australiacentral", countryName: "Australia" },
+            { code: "australiacentral2", countryName: "Australia" },
+            { code: "australiaeast", countryName: "Australia" },
+            { code: "australiasoutheast", countryName: "Australia" },
+            { code: "austriaeast", countryName: "Austria" },
+            { code: "belgiumcentral", countryName: "Belgium" },
+            { code: "brazilsouth", countryName: "Brazil" },
+            { code: "brazilsoutheast", countryName: "Brazil" },
+            { code: "canadacentral", countryName: "Canada" },
+            { code: "canadaeast", countryName: "Canada" },
+            { code: "centralindia", countryName: "India" },
+            { code: "centralus", countryName: "USA" },
+            { code: "centraluseuap", countryName: "USA" },
+            { code: "chilecentral", countryName: "Chile" },
+            { code: "deloscloudgermanynorth", countryName: "Germany" },
+            { code: "eastasia", countryName: "Asia Pacific" },
+            { code: "eastus", countryName: "USA" },
+            { code: "eastus2", countryName: "USA" },
+            { code: "eastus2euap", countryName: "USA" },
+            { code: "francecentral", countryName: "France" },
+            { code: "francesouth", countryName: "France" },
+            { code: "germanynorth", countryName: "Germany" },
+            { code: "germanywestcentral", countryName: "Germany" },
+            { code: "indonesiacentral", countryName: "Indonesia" },
+            { code: "israelcentral", countryName: "Israel" },
+            { code: "israelnorthwest", countryName: "Israel" },
+            { code: "italynorth", countryName: "Italy" },
+            { code: "japaneast", countryName: "Japan" },
+            { code: "japanwest", countryName: "Japan" },
+            { code: "jioindiacentral", countryName: "India" },
+            { code: "jioindiawest", countryName: "India" },
+            { code: "koreacentral", countryName: "South Korea" },
+            { code: "koreasouth", countryName: "South Korea" },
+            { code: "malaysiasouth", countryName: "Malaysia" },
+            { code: "malaysiawest", countryName: "Malaysia" },
+            { code: "mexicocentral", countryName: "Mexico" },
+            { code: "newzealandnorth", countryName: "New Zealand" },
+            { code: "northcentralus", countryName: "USA" },
+            { code: "northeurope", countryName: "Europe" },
+            { code: "norwayeast", countryName: "Norway" },
+            { code: "norwaywest", countryName: "Norway" },
+            { code: "perth", countryName: "Australia" },
+            { code: "polandcentral", countryName: "Poland" },
+            { code: "portland", countryName: "USA" },
+            { code: "qatarcentral", countryName: "Qatar" },
+            { code: "sgxsingapore1", countryName: "Singapore" },
+            { code: "southafricanorth", countryName: "South Africa" },
+            { code: "southafricawest", countryName: "South Africa" },
+            { code: "southcentralus", countryName: "USA" },
+            { code: "southcentralus2", countryName: "USA" },
+            { code: "southcentralusstg", countryName: "USA" },
+            { code: "southeastasia", countryName: "Singapore" },
+            { code: "southeastus", countryName: "USA" },
+            { code: "southindia", countryName: "India" },
+            { code: "spaincentral", countryName: "Spain" },
+            { code: "swedencentral", countryName: "Sweden" },
+            { code: "swedensouth", countryName: "Sweden" },
+            { code: "switzerlandnorth", countryName: "Switzerland" },
+            { code: "switzerlandwest", countryName: "Switzerland" },
+            { code: "taiwannorth", countryName: "Taiwan" },
+            { code: "taiwannorthwest", countryName: "Taiwan" },
+            { code: "uaecentral", countryName: "UAE" },
+            { code: "uaenorth", countryName: "UAE" },
+            { code: "uksouth", countryName: "UK" },
+            { code: "ukwest", countryName: "UK" },
+            { code: "usgovarizona", countryName: "USA" },
+            { code: "usgoviowa", countryName: "USA" },
+            { code: "usgovtexas", countryName: "USA" },
+            { code: "usgovvirginia", countryName: "USA" },
+            { code: "westcentralus", countryName: "USA" },
+            { code: "westeurope", countryName: "Netherlands" },
+            { code: "westindia", countryName: "India" },
+            { code: "westus", countryName: "USA" },
+            { code: "westus2", countryName: "USA" },
+            { code: "westus3", countryName: "USA" }
+        ];
+
+        for (const region of azureRegionCountries) {
+            const result = await Azure.updateMany(
+                { armRegionName: region.code },
+                { $set: { countryName: region.countryName } }
+            );
+
+            console.log(`🔄 Updated region ${region.code} => ${region.countryName}, Matched: ${result.matchedCount}, Modified: ${result.modifiedCount}`);
+        }
+
+
+        return NextResponse.json(
+            { message: "✅ Country names added successfully based on armRegionName." },
+            { status: 200 }
+        );
+
 
     } catch (err) {
         console.error("❌ Error fetching services and products:", err);
@@ -157,3 +275,5 @@ function mapAwsToAzureType(awsItem) {
 
     return 'Consumption'; // fallback default
 }
+
+

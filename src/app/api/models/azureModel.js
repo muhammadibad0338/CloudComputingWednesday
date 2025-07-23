@@ -36,7 +36,11 @@ const azureSchema = new mongoose.Schema({
         required: false, // optional — you can also remove this line
         default: undefined // optional: don't include field if it's not provided
     },
-    effectiveStartDate: String,
+    countryName: {
+        type: String,
+        default: ''
+    },
+    // effectiveStartDate: String,
 }, { timestamps: true });
 
 
