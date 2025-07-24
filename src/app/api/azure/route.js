@@ -90,11 +90,13 @@ export async function GET(req) {
         for (const key of searchParams.keys()) {
             if (ALLOWED_FILTERS.includes(key)) {
                 const value = searchParams.get(key);
-                if (value.includes(',')) {
-                    // Support multiple values as array (e.g., ?armRegionName=westus,eastus)
-                    mongoFilter[key] = { $in: value.split(',').map(v => v.trim()) };
-                } else {
-                    mongoFilter[key] = value.trim();
+                if (value.trim().length > 0) {
+                    if (value.includes(',')) {
+                        // Support multiple values as array (e.g., ?armRegionName=westus,eastus)
+                        mongoFilter[key] = { $in: value.split(',').map(v => v.trim()) };
+                    } else {
+                        mongoFilter[key] = value.trim();
+                    }
                 }
             }
         }
@@ -132,8 +134,8 @@ export async function PUT(req) {
     try {
         await connectMongoDB();
 
-        // const uniqueServices = await Azure.distinct("armRegionName");
-        // const uniqueProducts = await Azure.distinct("location");
+        const armRegionName = await Azure.distinct("armRegionName");
+        const countryName = await Azure.distinct("countryName");
 
         const azureRegionCountries = [
             { code: "", countryName: "Unknown" },
@@ -240,25 +242,29 @@ export async function PUT(req) {
             { code: "westus3", countryName: "USA" }
         ];
 
-         let updateCountryName = [
-            // { code: "UK", countryName: "United Kingdom" },
-            // { code: "UAE", countryName: "United Arab Emirates" },
-            // { code: "Asia Pacific", countryName: "Hong Kong" },
-            { code: "northeurope", countryName: "Ireland" },
-        ]
+        //  let updateCountryName = [
+        //     // { code: "UK", countryName: "United Kingdom" },
+        //     // { code: "UAE", countryName: "United Arab Emirates" },
+        //     // { code: "Asia Pacific", countryName: "Hong Kong" },
+        //     { code: "northeurope", countryName: "Ireland" },
+        // ]
 
-        for (const region of updateCountryName) {
-            const result = await Azure.updateMany(
-                { armRegionName: region.code },
-                { $set: { countryName: region.countryName } }
-            );
+        // for (const region of updateCountryName) {
+        //     const result = await Azure.updateMany(
+        //         { armRegionName: region.code },
+        //         { $set: { countryName: region.countryName } }
+        //     );
 
-            // console.log(`🔄 Updated region ${region.code} => ${region.countryName}, Matched: ${result.matchedCount}, Modified: ${result.modifiedCount}`);
-        }
+        //     // console.log(`🔄 Updated region ${region.code} => ${region.countryName}, Matched: ${result.matchedCount}, Modified: ${result.modifiedCount}`);
+        // }
 
 
         return NextResponse.json(
-            { message: "✅ Country names added successfully based on armRegionName." },
+            // { message: "✅ Country names added successfully based on armRegionName." },
+            {
+                armRegionName,
+                countryName
+            },
             { status: 200 }
         );
 

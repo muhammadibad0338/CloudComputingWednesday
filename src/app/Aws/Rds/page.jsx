@@ -29,16 +29,18 @@ const Page = () => {
 
 
     const { awsRds, loading, error } = useSelector((state) => state.aws);
-    const { comparisionService, filterloading, page, limit } = useSelector((state) => state.comparisionFilter);
+    const { comparisionService, filterloading, page, limit, countryName } = useSelector((state) => state.comparisionFilter);
 
     const [paramData, setParamData] = useState({
         'page': page,
         'limit': limit,
+        'countryName' : countryName
     })
 
     useEffect(() => {
-        dispatch(getAwsRdsData(paramData));
-    }, [dispatch, paramData]);
+        const mappedData = { page, limit, countryName };
+        dispatch(getAwsRdsData(mappedData));
+    }, [page, limit, countryName]);
 
 
     if (loading || Object.keys(awsRds).length == 0) return <div>Loading...</div>;

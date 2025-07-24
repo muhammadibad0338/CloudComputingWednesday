@@ -30,12 +30,12 @@ export default function AzurePage() {
 
 
     const { azure, loading, error } = useSelector((state) => state.azure);
-    const { comparisionService, filterloading, page, limit } = useSelector((state) => state.comparisionFilter);
+    const { comparisionService, filterloading, page, limit, countryName } = useSelector((state) => state.comparisionFilter);
 
 
     // Map comparisionService to actual filters
     useEffect(() => {
-        const mappedData = { page, limit };
+        const mappedData = { page, limit, countryName };
 
         if (comparisionService === 'VMWARE') {
             mappedData.serviceName = 'Virtual Machines';
@@ -47,7 +47,7 @@ export default function AzurePage() {
 
         dispatch(getAzureData(mappedData));
 
-    }, [comparisionService, page, limit])
+    }, [comparisionService, page, limit, countryName])
 
 
     if (loading || Object.keys(azure).length == 0) return <div>Loading...</div>;

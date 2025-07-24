@@ -190,11 +190,13 @@ export async function GET(req) {
         for (const key of searchParams.keys()) {
             if (ALLOWED_FILTERS.includes(key)) {
                 const value = searchParams.get(key);
-                if (value.includes(',')) {
-                    // Support multiple values as array (e.g., ?armRegionName=westus,eastus)
-                    mongoFilter[key] = { $in: value.split(',').map(v => v.trim()) };
-                } else {
-                    mongoFilter[key] = value.trim();
+                if (value.trim().length > 0) {
+                    if (value.includes(',')) {
+                        // Support multiple values as array (e.g., ?armRegionName=westus,eastus)
+                        mongoFilter[key] = { $in: value.split(',').map(v => v.trim()) };
+                    } else {
+                        mongoFilter[key] = value.trim();
+                    }
                 }
             }
         }

@@ -47,6 +47,10 @@ const useStyles = makeStyles((theme) => ({
         cursor: 'pointer',
         // backgroundImage: 'linear-gradient(rgba(76, 207, 248, 1), rgba(74, 75, 227, 1),rgba(35, 52, 156, 1)) !important',
     },
+    noFound: {
+        padding: '10px 20px',
+        textAlign: 'center'
+    }
 
 }));
 
@@ -113,7 +117,8 @@ const VMwareTable = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {
+                            {awsVmware?.data.length == 0 ?
+                                <Typography className={classes.noFound} variant='h6' >No Match Result Found </Typography> :
                                 awsVmware?.data?.map((service, ind) => {
                                     return (
                                         <StyledTableRow key={ind}  >

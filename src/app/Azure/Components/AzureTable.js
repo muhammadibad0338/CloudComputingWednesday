@@ -16,7 +16,7 @@ import {
     Collapse
 } from '@mui/material';
 import { makeStyles, } from "@mui/styles";
-import { styled } from '@mui/system';
+import { padding, styled, textAlign } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux'
 
 
@@ -47,7 +47,11 @@ const useStyles = makeStyles((theme) => ({
         cursor: 'pointer',
         // backgroundImage: 'linear-gradient(rgba(76, 207, 248, 1), rgba(74, 75, 227, 1),rgba(35, 52, 156, 1)) !important',
     },
-    
+    noFound:{
+        padding:'10px 20px',
+        textAlign:'center'
+    }
+
 }));
 
 
@@ -84,7 +88,7 @@ const AzureTable = () => {
             <Paper sx={{ width: '100%', overflow: 'hidden' }}>
                 <TableContainer sx={{ maxHeight: '40vh' }} >
                     <Table stickyHeader  >
-                        <TableHead sx={{ '& th': { backgroundImage: 'linear-gradient(rgba(76, 207, 248, 1), rgba(74, 75, 227, 1),rgba(35, 52, 156, 1)) !important',border:'none'  } }}  >
+                        <TableHead sx={{ '& th': { backgroundImage: 'linear-gradient(rgba(76, 207, 248, 1), rgba(74, 75, 227, 1),rgba(35, 52, 156, 1)) !important', border: 'none' } }}  >
                             <TableRow className={classes.tableHead} >
                                 <TableCell className={classes.tableCell} >
                                     SKU ID
@@ -114,36 +118,38 @@ const AzureTable = () => {
                         </TableHead>
                         <TableBody>
                             {
-                                azure?.data?.map((service, ind) => {
-                                    return (
-                                        <StyledTableRow key={ind}  >
-                                            <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.skuId}</Typography>
-                                            </TableCell>
-                                            <TableCell >
-                                                <Typography className={classes.tableCellBody} >{service?.armRegionName}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.location}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.serviceName}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.productName}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.type}</Typography>
-                                            </TableCell>
-                                            <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.unitOfMeasure}</Typography>
-                                            </TableCell>
-                                            <TableCell  >
-                                                <Typography className={classes.tableCellBody} >{service?.unitPrice}</Typography>
-                                            </TableCell>
-                                        </StyledTableRow>
-                                    )
-                                })
+                                azure?.data.length == 0 ?
+                                    <Typography className={classes.noFound} variant='h6' >No Match Result Found </Typography> :
+                                    azure?.data?.map((service, ind) => {
+                                        return (
+                                            <StyledTableRow key={ind}  >
+                                                <TableCell>
+                                                    <Typography className={classes.tableCellBody} >{service?.skuId}</Typography>
+                                                </TableCell>
+                                                <TableCell >
+                                                    <Typography className={classes.tableCellBody} >{service?.armRegionName}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography className={classes.tableCellBody} >{service?.location}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography className={classes.tableCellBody} >{service?.serviceName}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography className={classes.tableCellBody} >{service?.productName}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography className={classes.tableCellBody} >{service?.type}</Typography>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Typography className={classes.tableCellBody} >{service?.unitOfMeasure}</Typography>
+                                                </TableCell>
+                                                <TableCell  >
+                                                    <Typography className={classes.tableCellBody} >{service?.unitPrice}</Typography>
+                                                </TableCell>
+                                            </StyledTableRow>
+                                        )
+                                    })
                             }
                         </TableBody>
                     </Table>
