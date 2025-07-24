@@ -143,6 +143,7 @@ export async function GET(req) {
             "endRange",
             "pricePerUnitUSD",
             "offerTermCode",
+            'countryName',
         ];
 
 

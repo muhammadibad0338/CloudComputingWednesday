@@ -167,6 +167,7 @@ export async function GET(req) {
             "operation",
             "description",
             "productsubgroup",
+            'countryName',
 
             // Pricing fields
             "unit",

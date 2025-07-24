@@ -145,6 +145,7 @@ export async function GET(req) {
             "unit",
             "beginRange",
             "endRange",
+            'countryName',
         ];
 
         const mongoFilter = {};

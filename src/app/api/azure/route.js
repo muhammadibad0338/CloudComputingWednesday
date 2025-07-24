@@ -82,6 +82,7 @@ export async function GET(req) {
             'skuName',
             'unitOfMeasure',
             'type',
+            'countryName'
         ];
 
         const mongoFilter = {};
