@@ -1,9 +1,12 @@
 // /app/api/aws/vmware/route.js
 
 import { NextResponse } from 'next/server';
-import { PricingClient, GetProductsCommand } from "@aws-sdk/client-pricing";
-import VmwarePricing from '../../models/vmwarePricing';
+import { PricingClient, GetProductsCommand, } from "@aws-sdk/client-pricing";
 import connectMongoDB from '../../mongodb';
+import VmwarePricing from '../../models/vmwarePricing';
+import RDSPricing from '../../models/rdsModel'
+import SThreeGlacierPricing from '../../models/sThreeGlacierModel'
+import SThreePricing from '../../models/sThreeModel'
 
 
 
@@ -186,6 +189,32 @@ export async function GET(req) {
         return NextResponse.json({
             success: false,
             message: 'Server Error',
+        }, { status: 500 });
+    }
+}
+
+
+
+// For Filtering
+export async function PUT(req) {
+    try {
+        await connectMongoDB();
+
+        const data = await VmwarePricing.distinct("offerTermCode");
+        // const countryName = await Azure.distinct("countryName");
+        return NextResponse.json(
+            // { message: "✅ Country names added successfully based on armRegionName." },
+            {
+                data,
+            },
+            { status: 200 }
+        );
+
+
+    } catch (err) {
+        console.error("❌ Error fetching services and products:", err);
+        return NextResponse.json({
+            error: "Failed to fetch unique service and product names."
         }, { status: 500 });
     }
 }
