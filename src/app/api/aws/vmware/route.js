@@ -203,10 +203,23 @@ export async function PUT(req) {
         // const data = await VmwarePricing.distinct("offerTermCode");
         // const countryName = await Azure.distinct("countryName");
 
-        const result = await VmwarePricing.updateMany(
-            {},
-            { $set: { type: 'Consumption' } }
-        );
+
+
+
+
+
+
+
+
+
+
+
+        
+        // Run this for all except RDS
+        // const result = await SThreePricing.updateMany(
+        //     {},
+        //     { $set: { type: 'Consumption' } }
+        // );
 
         return NextResponse.json(
             // { message: "✅ Country names added successfully based on armRegionName." },
