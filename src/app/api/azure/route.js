@@ -240,13 +240,19 @@ export async function PUT(req) {
             { code: "westus3", countryName: "USA" }
         ];
 
-        for (const region of azureRegionCountries) {
+         let updateCountryName = [
+            { code: "UK", countryName: "United Kingdom" },
+            { code: "UAE", countryName: "United Arab Emirates" },
+            // { code: "Asia Pacific", countryName: "Hong Kong" },
+        ]
+
+        for (const region of updateCountryName) {
             const result = await Azure.updateMany(
-                { armRegionName: region.code },
+                { countryName: region.code },
                 { $set: { countryName: region.countryName } }
             );
 
-            console.log(`🔄 Updated region ${region.code} => ${region.countryName}, Matched: ${result.matchedCount}, Modified: ${result.modifiedCount}`);
+            // console.log(`🔄 Updated region ${region.code} => ${region.countryName}, Matched: ${result.matchedCount}, Modified: ${result.modifiedCount}`);
         }
 
 
