@@ -26,6 +26,10 @@ const sThreePricing = new mongoose.Schema({
     fromLocation: String,
     toLocationType: String,
     toLocation: String,
+    countryName: {
+        type: String,
+        default: ''
+    },
 
 
 

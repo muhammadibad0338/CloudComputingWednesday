@@ -23,6 +23,10 @@ const vmwarePricing = new mongoose.Schema({
     operation: String,
     vmwareproductid: String,
     vmwareregion: String,
+    countryName: {
+        type: String,
+        default: ''
+    },
 
     // From terms.OnDemand
     offerTermCode: String,

@@ -49,6 +49,10 @@ const rdsPricing = new mongoose.Schema({
     processorArchitecture: String,
     operation: String,
     group: String,
+    countryName: {
+        type: String,
+        default: ''
+    },
 
 
 

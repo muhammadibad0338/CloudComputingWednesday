@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { PricingClient, GetProductsCommand } from "@aws-sdk/client-pricing";
 import connectMongoDB from '../../mongodb';
 import RDSPricing from '../../models/rdsModel'
+import SThreeGlacierPricing from '../../models/sThreeGlacierModel'
+import SThreePricing from '../../models/sThreeModel'
+import VmwarePricing from '../../models/vmwarePricing';
 
 
 // Create the client configuration
@@ -217,6 +220,83 @@ export async function GET(req) {
         return NextResponse.json({
             success: false,
             message: 'Server Error',
+        }, { status: 500 });
+    }
+}
+
+
+
+export async function PUT(req) {
+    try {
+        await connectMongoDB();
+
+        // const regionCode = await RDSPricing.distinct("regionCode");
+        // const location = await RDSPricing.distinct("location");
+        let awsRegionCountries = [
+            { location: "AWS GovCloud (US-East)", countryName: "USA" },
+            { location: "AWS GovCloud (US-West)", countryName: "USA" },
+            { location: "Africa (Cape Town)", countryName: "South Africa" },
+            { location: "Any", countryName: "Global" },
+            { location: "Asia Pacific (Hong Kong)", countryName: "Hong Kong" },
+            { location: "Asia Pacific (Hyderabad)", countryName: "India" },
+            { location: "Asia Pacific (Jakarta)", countryName: "Indonesia" },
+            { location: "Asia Pacific (Malaysia)", countryName: "Malaysia" },
+            { location: "Asia Pacific (Melbourne)", countryName: "Australia" },
+            { location: "Asia Pacific (Mumbai)", countryName: "India" },
+            { location: "Asia Pacific (Osaka)", countryName: "Japan" },
+            { location: "Asia Pacific (Seoul)", countryName: "South Korea" },
+            { location: "Asia Pacific (Singapore)", countryName: "Singapore" },
+            { location: "Asia Pacific (Sydney)", countryName: "Australia" },
+            { location: "Asia Pacific (Taipei)", countryName: "Taiwan" },
+            { location: "Asia Pacific (Thailand)", countryName: "Thailand" },
+            { location: "Asia Pacific (Tokyo)", countryName: "Japan" },
+            { location: "Canada (Central)", countryName: "Canada" },
+            { location: "Canada West (Calgary)", countryName: "Canada" },
+            { location: "China (Beijing)", countryName: "China" },
+            { location: "China (Ningxia)", countryName: "China" },
+            { location: "EU (Frankfurt)", countryName: "Germany" },
+            { location: "EU (Ireland)", countryName: "Ireland" },
+            { location: "EU (London)", countryName: "United Kingdom" },
+            { location: "EU (Milan)", countryName: "Italy" },
+            { location: "EU (Paris)", countryName: "France" },
+            { location: "EU (Stockholm)", countryName: "Sweden" },
+            { location: "Europe (Spain)", countryName: "Spain" },
+            { location: "Europe (Zurich)", countryName: "Switzerland" },
+            { location: "Israel (Tel Aviv)", countryName: "Israel" },
+            { location: "Mexico (Central)", countryName: "Mexico" },
+            { location: "Middle East (Bahrain)", countryName: "Bahrain" },
+            { location: "Middle East (UAE)", countryName: "United Arab Emirates" },
+            { location: "South America (Sao Paulo)", countryName: "Brazil" },
+            { location: "US East (N. Virginia)", countryName: "USA" },
+            { location: "US East (Ohio)", countryName: "USA" },
+            { location: "US West (Los Angeles)", countryName: "USA" },
+            { location: "US West (N. California)", countryName: "USA" },
+            { location: "US West (Oregon)", countryName: "USA" }
+        ]
+
+
+
+
+        for (const region of awsRegionCountries) {
+            const result = await RDSPricing.updateMany(
+                { location: region.location },
+                { $set: { countryName: region.countryName } }
+            );
+
+            // console.log(`🔄 Updated region ${region.code} => ${region.countryName}, Matched: ${result.matchedCount}, Modified: ${result.modifiedCount}`);
+        }
+
+
+        return NextResponse.json(
+            { message: "✅ Country names added successfully based on armRegionName." },
+            { status: 200 }
+        );
+
+
+    } catch (err) {
+        console.error("❌ Error fetching services and products:", err);
+        return NextResponse.json({
+            error: "Failed to fetch unique service and product names."
         }, { status: 500 });
     }
 }

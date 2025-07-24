@@ -18,6 +18,10 @@ const sThreeGlacierPricing = new mongoose.Schema({
     // productgroupid: String,
     operation: String,
     group: String,
+    countryName: {
+        type: String,
+        default: ''
+    },
 
 
 
