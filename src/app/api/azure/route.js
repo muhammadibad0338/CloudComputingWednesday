@@ -134,15 +134,20 @@ export async function PUT(req) {
     try {
         await connectMongoDB();
 
-        const armRegionName = await Azure.distinct("armRegionName");
-        const countryName = await Azure.distinct("countryName");
+        // const type = await Azure.distinct("type");
+        // const countryName = await Azure.distinct("countryName");
 
-       
+        const result = await Azure.updateMany(
+            { type: 'DevTestConsumption' },
+            { $set: { type: 'Consumption' } }
+        );
+
         return NextResponse.json(
             // { message: "✅ Country names added successfully based on armRegionName." },
             {
-                armRegionName,
-                countryName
+                result,
+                // type,
+                // countryName
             },
             { status: 200 }
         );
