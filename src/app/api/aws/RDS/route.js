@@ -233,71 +233,7 @@ export async function PUT(req) {
     try {
         await connectMongoDB();
 
-        // Start transforming for type consumption or reservation
-        // Add type: "Consumption" to docs with empty/missing reserved
-        // const result = await RDSPricing.updateMany(
-        //     {
-        //         $or: [
-        //             { reserved: { $exists: false } },
-        //             { reserved: { $size: 0 } }
-        //         ]
-        //     },
-        //     { $set: { type: "Consumption" } }
-        // );
-        // return NextResponse.json({
-        //     message: "Consumption types updated",
-        //     matched: result.matchedCount,
-        //     modified: result.modifiedCount,
-        // });
 
-        // 2. Split Reserved Entries as new docs
-        // const docs = await RDSPricing.find({
-        //     reserved: { $exists: true, $ne: [] },
-        // });
-
-        // const insertList = [];
-
-        // for (const doc of docs) {
-        //     const base = doc.toObject();
-        //     const reservedList = base.reserved;
-
-        //     for (const reserved of reservedList) {
-        //         insertList.push({
-        //             ...base,
-        //             ...reserved,
-        //             type: "Reservation",
-        //             reserved: [],
-        //             _id: undefined, // Remove _id
-        //             // sku: undefined, // Optional: avoid SKU conflict
-        //         });
-        //     }
-        // }
-
-        // const inserted = await RDSPricing.insertMany(insertList, { ordered: false });
-
-        // return NextResponse.json({
-        //     message: `${inserted.length} Reservation entries inserted`,
-        // });
-
-        const result = await RDSPricing.updateMany(
-            {
-                $or: [
-                    { type: { $exists: false } },
-                    { type: { $nin: ["Consumption", "Reservation"] } }
-                ]
-            },
-            { $set: { type: "Consumption" } }
-        );
-
-        return NextResponse.json({
-            message: "Unset or invalid types updated to 'Consumption'",
-            matched: result.matchedCount,
-            modified: result.modifiedCount,
-        });
-
-
-
-        // END
 
         // const regionCode = await RDSPricing.distinct("regionCode");
         // const location = await RDSPricing.distinct("location");
@@ -369,3 +305,82 @@ export async function PUT(req) {
         }, { status: 500 });
     }
 }
+
+
+
+// FOR Type consumption and reservation
+// export async function PUT(req) {
+//     try {
+//         await connectMongoDB();
+//         // Start transforming for type consumption or reservation
+//         // Add type: "Consumption" to docs with empty/missing reserved
+//         // const result = await RDSPricing.updateMany(
+//         //     {
+//         //         $or: [
+//         //             { reserved: { $exists: false } },
+//         //             { reserved: { $size: 0 } }
+//         //         ]
+//         //     },
+//         //     { $set: { type: "Consumption" } }
+//         // );
+//         // return NextResponse.json({
+//         //     message: "Consumption types updated",
+//         //     matched: result.matchedCount,
+//         //     modified: result.modifiedCount,
+//         // });
+
+//         // 2. Split Reserved Entries as new docs
+//         // const docs = await RDSPricing.find({
+//         //     reserved: { $exists: true, $ne: [] },
+//         // });
+
+//         // const insertList = [];
+
+//         // for (const doc of docs) {
+//         //     const base = doc.toObject();
+//         //     const reservedList = base.reserved;
+
+//         //     for (const reserved of reservedList) {
+//         //         insertList.push({
+//         //             ...base,
+//         //             ...reserved,
+//         //             type: "Reservation",
+//         //             reserved: [],
+//         //             _id: undefined, // Remove _id
+//         //             // sku: undefined, // Optional: avoid SKU conflict
+//         //         });
+//         //     }
+//         // }
+
+//         // const inserted = await RDSPricing.insertMany(insertList, { ordered: false });
+
+//         // return NextResponse.json({
+//         //     message: `${inserted.length} Reservation entries inserted`,
+//         // });
+
+//         // const result = await RDSPricing.updateMany(
+//         //     {
+//         //         $or: [
+//         //             { type: { $exists: false } },
+//         //             { type: { $nin: ["Consumption", "Reservation"] } }
+//         //         ]
+//         //     },
+//         //     { $set: { type: "Consumption" } }
+//         // );
+
+//         // return NextResponse.json({
+//         //     message: "Unset or invalid types updated to 'Consumption'",
+//         //     matched: result.matchedCount,
+//         //     modified: result.modifiedCount,
+//         // });
+
+
+
+//         // END
+//     } catch (err) {
+//         console.error("❌ Error fetching services and products:", err);
+//         return NextResponse.json({
+//             error: "Failed to fetch unique service and product names."
+//         }, { status: 500 });
+//     }
+// }
