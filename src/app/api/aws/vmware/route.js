@@ -200,12 +200,18 @@ export async function PUT(req) {
     try {
         await connectMongoDB();
 
-        const data = await VmwarePricing.distinct("offerTermCode");
+        // const data = await VmwarePricing.distinct("offerTermCode");
         // const countryName = await Azure.distinct("countryName");
+
+        const result = await VmwarePricing.updateMany(
+            {},
+            { $set: { type: 'Consumption' } }
+        );
+
         return NextResponse.json(
             // { message: "✅ Country names added successfully based on armRegionName." },
             {
-                data,
+                result,
             },
             { status: 200 }
         );
