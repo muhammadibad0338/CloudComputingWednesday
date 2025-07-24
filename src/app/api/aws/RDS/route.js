@@ -251,32 +251,48 @@ export async function PUT(req) {
         // });
 
         // 2. Split Reserved Entries as new docs
-        const docs = await RDSPricing.find({
-            reserved: { $exists: true, $ne: [] },
-        });
+        // const docs = await RDSPricing.find({
+        //     reserved: { $exists: true, $ne: [] },
+        // });
 
-        const insertList = [];
+        // const insertList = [];
 
-        for (const doc of docs) {
-            const base = doc.toObject();
-            const reservedList = base.reserved;
+        // for (const doc of docs) {
+        //     const base = doc.toObject();
+        //     const reservedList = base.reserved;
 
-            for (const reserved of reservedList) {
-                insertList.push({
-                    ...base,
-                    ...reserved,
-                    type: "Reservation",
-                    reserved: [],
-                    _id: undefined, // Remove _id
-                    // sku: undefined, // Optional: avoid SKU conflict
-                });
-            }
-        }
+        //     for (const reserved of reservedList) {
+        //         insertList.push({
+        //             ...base,
+        //             ...reserved,
+        //             type: "Reservation",
+        //             reserved: [],
+        //             _id: undefined, // Remove _id
+        //             // sku: undefined, // Optional: avoid SKU conflict
+        //         });
+        //     }
+        // }
 
-        const inserted = await RDSPricing.insertMany(insertList, { ordered: false });
+        // const inserted = await RDSPricing.insertMany(insertList, { ordered: false });
+
+        // return NextResponse.json({
+        //     message: `${inserted.length} Reservation entries inserted`,
+        // });
+
+        const result = await RDSPricing.updateMany(
+            {
+                $or: [
+                    { type: { $exists: false } },
+                    { type: { $nin: ["Consumption", "Reservation"] } }
+                ]
+            },
+            { $set: { type: "Consumption" } }
+        );
 
         return NextResponse.json({
-            message: `${inserted.length} Reservation entries inserted`,
+            message: "Unset or invalid types updated to 'Consumption'",
+            matched: result.matchedCount,
+            modified: result.modifiedCount,
         });
 
 
