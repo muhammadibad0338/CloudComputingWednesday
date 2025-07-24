@@ -20,7 +20,7 @@ const reservedPricingSchema = new mongoose.Schema({
 
 
 const rdsPricing = new mongoose.Schema({
-    sku: { type: String, unique: true },
+    sku: { type: String },
     productFamily: String,
     serviceCode: String,
     version: String,
@@ -50,6 +50,10 @@ const rdsPricing = new mongoose.Schema({
     operation: String,
     group: String,
     countryName: {
+        type: String,
+        default: ''
+    },
+    type: {
         type: String,
         default: ''
     },
