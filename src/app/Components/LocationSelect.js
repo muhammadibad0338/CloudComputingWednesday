@@ -38,8 +38,8 @@ const countryNamesAzure = [
     "Sweden",
     "Switzerland",
     "Taiwan",
-    "UAE",
-    "UK",
+    "United Arab Emirates",
+    "United Kingdom",
     "Netherlands"
 ];
 

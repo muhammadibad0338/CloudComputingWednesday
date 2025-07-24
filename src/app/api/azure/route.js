@@ -241,14 +241,15 @@ export async function PUT(req) {
         ];
 
          let updateCountryName = [
-            { code: "UK", countryName: "United Kingdom" },
-            { code: "UAE", countryName: "United Arab Emirates" },
+            // { code: "UK", countryName: "United Kingdom" },
+            // { code: "UAE", countryName: "United Arab Emirates" },
             // { code: "Asia Pacific", countryName: "Hong Kong" },
+            { code: "northeurope", countryName: "Ireland" },
         ]
 
         for (const region of updateCountryName) {
             const result = await Azure.updateMany(
-                { countryName: region.code },
+                { armRegionName: region.code },
                 { $set: { countryName: region.countryName } }
             );
 
