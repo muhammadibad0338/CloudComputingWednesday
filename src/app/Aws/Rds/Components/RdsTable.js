@@ -138,7 +138,7 @@ const RdsTable = () => {
                                                 <Typography className={classes.tableCellBody} >{service?.productFamily}</Typography>
                                             </TableCell>
                                             <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.networkPerformance}</Typography>
+                                                <Typography className={classes.tableCellBody} >{service?.type}</Typography>
                                             </TableCell>
                                             <TableCell>
                                                 <Typography className={classes.tableCellBody} >{service?.unit}</Typography>

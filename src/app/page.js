@@ -13,6 +13,7 @@ import { styled } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux';
 import ComparisionSelect from './Components/ComparisionSelectBox';
 import LocationSelect from './Components/LocationSelect';
+import TypeSelect from './Components/TypeSelect';
 
 
 const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
@@ -52,6 +53,7 @@ export default function Home() {
         <Grid size={{ xs: 12 }}   >
           <ComparisionSelect />
           <LocationSelect/>
+          <TypeSelect />
         </Grid>
         {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2}  >
           <AzurePage />

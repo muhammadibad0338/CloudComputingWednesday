@@ -109,6 +109,9 @@ const SThreeTable = () => {
                                     Storage Tier
                                 </TableCell>
                                 <TableCell className={classes.tableCell}>
+                                    Type
+                                </TableCell>
+                                <TableCell className={classes.tableCell}>
                                     Unit of Measure
                                 </TableCell>
                                 <TableCell className={classes.tableCell}>
@@ -117,7 +120,7 @@ const SThreeTable = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {awsSthree?.data.length == 0 ?
+                            {awsSthree?.data?.length == 0 ?
                                 <Typography className={classes.noFound} variant='h6' >No Match Result Found </Typography> :
                                 awsSthree?.data?.map((service, ind) => {
                                     return (
@@ -139,6 +142,9 @@ const SThreeTable = () => {
                                             </TableCell>
                                             <TableCell>
                                                 <Typography className={classes.tableCellBody} >{service?.operation.includes('SIA') ? 'Cool' : 'Hot'}</Typography>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Typography className={classes.tableCellBody} >{service?.type}</Typography>
                                             </TableCell>
                                             <TableCell>
                                                 <Typography className={classes.tableCellBody} >{service?.unit}</Typography>

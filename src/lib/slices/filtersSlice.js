@@ -6,6 +6,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     comparisionService: '',
     countryName: '',
+    type: '',
     filterloading: false,
     error: null,
     page: 1,
@@ -27,6 +28,9 @@ export const ServicesFilterSlice = createSlice({
         setCountryName: (state, action) => {
             state.countryName = action.payload;
         },
+        setType: (state, action) => {
+            state.type = action.payload;
+        },
         setPage: (state, action) => {
             state.page = action.payload;
         },
@@ -43,5 +47,5 @@ export const ServicesFilterSlice = createSlice({
     },
 });
 
-export const { setServiceMainFilter, resetState, setLoading, setError, setPage, setLimit, setCountryName } = ServicesFilterSlice.actions;
+export const { setServiceMainFilter, resetState, setLoading, setError, setPage, setLimit, setCountryName, setType } = ServicesFilterSlice.actions;
 export default ServicesFilterSlice.reducer;

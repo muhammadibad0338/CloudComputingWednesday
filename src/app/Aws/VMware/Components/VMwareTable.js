@@ -117,7 +117,7 @@ const VMwareTable = () => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {awsVmware?.data.length == 0 ?
+                            {awsVmware?.data?.length == 0 ?
                                 <Typography className={classes.noFound} variant='h6' >No Match Result Found </Typography> :
                                 awsVmware?.data?.map((service, ind) => {
                                     return (
@@ -138,7 +138,7 @@ const VMwareTable = () => {
                                                 <Typography className={classes.tableCellBody} >{service?.productFamily}</Typography>
                                             </TableCell>
                                             <TableCell>
-                                                <Typography className={classes.tableCellBody} >{service?.usagetype}</Typography>
+                                                <Typography className={classes.tableCellBody} >{service?.type}</Typography>
                                             </TableCell>
                                             <TableCell>
                                                 <Typography className={classes.tableCellBody} >{service?.unit}</Typography>
