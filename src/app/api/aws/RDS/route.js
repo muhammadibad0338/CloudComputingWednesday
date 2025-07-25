@@ -182,6 +182,7 @@ export async function GET(req) {
             "chargeid",
             "vmwareproductid",
             "vmwareregion",
+            'type',
         ];
 
 

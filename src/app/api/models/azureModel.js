@@ -40,6 +40,10 @@ const azureSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
+    generalizeMeasureUnit: {
+        type: String,
+        default: ''
+    },
     // effectiveStartDate: String,
 }, { timestamps: true });
 

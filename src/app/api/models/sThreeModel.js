@@ -34,6 +34,10 @@ const sThreePricing = new mongoose.Schema({
         type: String,
         default: ''
     },
+    generalizeMeasureUnit: {
+        type: String,
+        default: ''
+    },
 
 
 

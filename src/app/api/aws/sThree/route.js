@@ -144,6 +144,7 @@ export async function GET(req) {
             "pricePerUnitUSD",
             "offerTermCode",
             'countryName',
+            'type',
         ];
 
 

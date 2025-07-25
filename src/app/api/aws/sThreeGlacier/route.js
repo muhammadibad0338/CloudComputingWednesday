@@ -138,6 +138,7 @@ export async function GET(req) {
             "pricePerUnitUSD",
             "rateCode",
             'countryName',
+            'type',
         ];
 
 

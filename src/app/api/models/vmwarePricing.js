@@ -31,6 +31,10 @@ const vmwarePricing = new mongoose.Schema({
         type: String,
         default: ''
     },
+    generalizeMeasureUnit: {
+        type: String,
+        default: ''
+    },
 
     // From terms.OnDemand
     offerTermCode: String,

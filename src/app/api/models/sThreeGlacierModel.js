@@ -26,6 +26,10 @@ const sThreeGlacierPricing = new mongoose.Schema({
         type: String,
         default: ''
     },
+    generalizeMeasureUnit: {
+        type: String,
+        default: ''
+    },
 
 
 

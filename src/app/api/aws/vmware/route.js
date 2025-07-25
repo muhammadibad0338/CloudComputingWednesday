@@ -149,6 +149,7 @@ export async function GET(req) {
             "beginRange",
             "endRange",
             'countryName',
+            'type',
         ];
 
         const mongoFilter = {};
@@ -200,18 +201,8 @@ export async function PUT(req) {
     try {
         await connectMongoDB();
 
-        // const data = await VmwarePricing.distinct("offerTermCode");
+        const unit = await SThreeGlacierPricing.distinct("unit");
         // const countryName = await Azure.distinct("countryName");
-
-
-
-
-
-
-
-
-
-
 
 
         
@@ -224,7 +215,8 @@ export async function PUT(req) {
         return NextResponse.json(
             // { message: "✅ Country names added successfully based on armRegionName." },
             {
-                result,
+                unit,
+                // result,
             },
             { status: 200 }
         );
