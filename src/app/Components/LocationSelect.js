@@ -98,7 +98,7 @@ const LocationSelect = () => {
             }
             MenuProps={MenuProps}
             inputProps={{ 'aria-label': 'Select Geography' }}
-            sx={{ width: '350px', borderRadius: 2 }}
+            sx={{ width: '250px', borderRadius: 2 }}
         >
             <MenuItem disabled value="">
                 <em>Select Geography</em>

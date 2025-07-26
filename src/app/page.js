@@ -8,7 +8,7 @@ import { setServiceMainFilter } from '@/lib/slices/filtersSlice';
 
 import { Box, colors, Container, Grid, OutlinedInput, MenuItem, Select } from '@mui/material';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
-import { styled } from '@mui/system';
+import { display, flexWrap, justifyContent, styled } from '@mui/system';
 
 import { useDispatch, useSelector } from 'react-redux';
 import ComparisionSelect from './Components/ComparisionSelectBox';
@@ -51,11 +51,13 @@ export default function Home() {
             />
           </Box>
         </Grid>
-        <Grid size={{ xs: 12 }}   >
-          <ComparisionSelect />
-          <LocationSelect />
-          <TypeSelect />
-          <MeasureUnitSelectBox />
+        <Grid size={{ xs: 12 }} >
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: 2, mt: 2 }}>
+            <ComparisionSelect />
+            <LocationSelect />
+            <TypeSelect />
+            <MeasureUnitSelectBox />
+          </Box>
         </Grid>
         {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2}  >
           <AzurePage />
