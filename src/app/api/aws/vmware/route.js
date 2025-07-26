@@ -200,57 +200,62 @@ export async function GET(req) {
 export async function PUT(req) {
     try {
         await connectMongoDB();
-
-        // Define mapping rules
-        const hourUnits = [
-            "Attachment-hour", "CPU-hour", "Host-hour", "OSI-hour",
-            "TIB-hour", "VM-hour", "vCPU-hour", "Hrs"
-        ];
-        const monthUnits = [
-            "Mo", "Tag-Mo", "Bucket-Mo", "GB-Mo", "GB-month",
-            "Gigabyte Month", "CPU-month"
-        ];
-        const apiUnits = ["API Requests", "Requests"];
-        const gbUnits = ["GB"];
-        const quantityUnits = ["Jobs", "Objects", "Updates", "Count"];
-
-        // Fetch all documents where generalizeMeasureUnit is not set or empty
-        const documents = await VmwarePricing.find({
-            $or: [
-                { generalizeMeasureUnit: { $exists: false } },
-                { generalizeMeasureUnit: "" }
-            ]
-        });
-
-        let updated = 0;
-
-        for (const doc of documents) {
-            const unit = doc.unit?.trim();
-
-            if (!unit) continue;
-
-            let category = "";
-
-            if (hourUnits.includes(unit)) category = "Hour";
-            else if (monthUnits.includes(unit)) category = "Month";
-            else if (apiUnits.includes(unit)) category = "API Calls";
-            else if (gbUnits.includes(unit)) category = "GB";
-            else if (quantityUnits.includes(unit)) category = "Quantity";
-
-            if (category) {
-                await VmwarePricing.updateOne(
-                    { _id: doc._id },
-                    { $set: { generalizeMeasureUnit: category } }
-                );
-                updated++;
+        // Define update mappings as arrays
+        const updates = [
+            {
+                units: [
+                    "ACU-Hr", "ACU-hour", "CR-Hr", "vCPU-Hour",
+                    "vCPU-Hours", "vCPU-hour", "Hrs"
+                ],
+                value: "Hour"
+            },
+            {
+                units: [
+                    "IOPS-Mo", "MBPS-Mo", "vCPU-Months",
+                    "ACU-Months", "GB-Mo"
+                ],
+                value: "Month"
+            },
+            {
+                units: ["GB"],
+                value: "GB"
+            },
+            {
+                units: ["API Calls"],
+                value: "API Calls"
+            },
+            {
+                units: ["IOs"],
+                value: "IOs"
+            },
+            {
+                units: ["Quantity"],
+                value: "Quantity"
             }
+        ];
+
+        let totalUpdated = 0;
+
+        for (const update of updates) {
+            const result = await RDSPricing.updateMany(
+                {
+                    unit: { $in: update.units },
+                    $or: [
+                        { generalizeMeasureUnit: { $exists: false } },
+                        { generalizeMeasureUnit: "" }
+                    ]
+                },
+                { $set: { generalizeMeasureUnit: update.value } }
+            );
+
+            totalUpdated += result.modifiedCount;
         }
 
         return NextResponse.json({
             success: true,
-            updatedCount: updated,
-            message: `Updated ${updated} documents with generalizeMeasureUnit`,
-        }, { status: 200 });
+            updatedCount: totalUpdated,
+            message: `Updated ${totalUpdated} RDS pricing documents with generalizeMeasureUnit`,
+        }, { status: 200 })
 
 
 
