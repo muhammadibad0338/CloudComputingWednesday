@@ -6,7 +6,7 @@ import AwsPage from "./Aws/Page"
 
 import { setServiceMainFilter } from '@/lib/slices/filtersSlice';
 
-import { Box, colors, Container, Grid, OutlinedInput, MenuItem, Select } from '@mui/material';
+import { Box, colors, Container, Grid, OutlinedInput, MenuItem, Select, Button } from '@mui/material';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import { display, flexWrap, justifyContent, styled } from '@mui/system';
 
@@ -15,6 +15,9 @@ import ComparisionSelect from './Components/ComparisionSelectBox';
 import LocationSelect from './Components/LocationSelect';
 import TypeSelect from './Components/TypeSelect';
 import MeasureUnitSelectBox from './Components/MeasureUnitSelectBox';
+import RestoreIcon from '@mui/icons-material/Restore';
+
+import { setCountryName, setType, setGeneralizeMeasureUnit } from '@/lib/slices/filtersSlice';
 
 
 const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
@@ -32,7 +35,11 @@ export default function Home() {
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(true)
 
 
-  
+  const resetFilters = () => {
+    dispatch(setCountryName(''));
+    dispatch(setType(''));
+    dispatch(setGeneralizeMeasureUnit(''));
+  }
 
 
 
@@ -55,9 +62,12 @@ export default function Home() {
         <Grid size={{ xs: 12 }} >
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: 2, mt: 2 }}>
             <ComparisionSelect />
-           {comparisionService &&  <LocationSelect />}
+            {comparisionService && <LocationSelect />}
             {comparisionService && <TypeSelect />}
             {comparisionService && <MeasureUnitSelectBox />}
+            {comparisionService && <Button onClick={resetFilters} sx={{ color: 'red' }} variant="contained" endIcon={<RestoreIcon />}>
+              Reset Filters
+            </Button>}
           </Box>
         </Grid>
         {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2}  >
