@@ -134,23 +134,156 @@ export async function PUT(req) {
     try {
         await connectMongoDB();
 
-        const unitOfMeasure = await Azure.distinct("unitOfMeasure");
+        // const unitOfMeasure = await Azure.distinct("unitOfMeasure");
         // const countryName = await Azure.distinct("countryName");
 
         // const result = await Azure.updateMany(
         //     { type: 'DevTestConsumption' },
         //     { $set: { type: 'Consumption' } }
         // );
-
-        return NextResponse.json(
-            // { message: "✅ Country names added successfully based on armRegionName." },
+        const updates = [
             {
-                unitOfMeasure,
-                // type,
-                // countryName
+                units: [
+                    "1 Hour",
+                    "1 GB Hour",
+                    "1 GiB Hour",
+                    "1 GB/Hour",
+                    "1 GiB/Hour",
+                    "1/Hour",
+                    "100/Hour",
+                    "10K/Hour",
+                    "100 Hours"
+                ],
+                value: "Hour"
             },
-            { status: 200 }
-        );
+            {
+                units: [
+                    "1 Month",
+                    "1/Month",
+                    "100/Month",
+                    "10K/Month",
+                    "1K/Month",
+                    "1M/Month",
+                    "5/Month",
+                    "1 GB/Month",
+                    "1 GiB/Month",
+                    "1 TB/Month",
+                    "1 MB/Day"
+                ],
+                value: "Month"
+            },
+            {
+                units: [
+                    "1 GB",
+                    "1 GiB"
+                ],
+                value: "GB"
+            },
+            {
+                units: [
+                    "1 API Calls"
+                ],
+                value: "API Calls"
+            },
+            {
+                units: [
+                    "1 IOPS/Month"
+                ],
+                value: "IOs"
+            },
+            {
+                units: [
+                    "1",
+                    "1 Count",
+                    "1 Rotation",
+                    "10",
+                    "100",
+                    "100K",
+                    "10K",
+                    "10M",
+                    "1K",
+                    "25K",
+                    "50K"
+                ],
+                value: "Quantity"
+            },
+            {
+                units: [
+                    "1 Day",
+                    "1 GB/Day",
+                    "1K/Day",
+                    "1/Day"
+                ],
+                value: "Day"
+            },
+            {
+                units: [
+                    "1 Second",
+                    "1 GB Second",
+                    "1 GiB Second",
+                    "100 Seconds",
+                    "100 GB Seconds"
+                ],
+                value: "Second"
+            },
+            {
+                units: [
+                    "1 Minute"
+                ],
+                value: "Minute"
+            },
+            {
+                units: [
+                    "1/Year"
+                ],
+                value: "Year"
+            },
+            {
+                units: [
+                    "1 MB",
+                    "1 MB/Month"
+                ],
+                value: "MB"
+            }
+        ];
+
+
+        let totalUpdated = 0;
+
+        for (const update of updates) {
+            const result = await Azure.updateMany(
+                {
+                    unitOfMeasure: { $in: update.units },
+                    $or: [
+                        { generalizeMeasureUnit: { $exists: false } },
+                        { generalizeMeasureUnit: "" }
+                    ]
+                },
+                { $set: { generalizeMeasureUnit: update.value } }
+            );
+
+            totalUpdated += result.modifiedCount;
+        }
+
+        return NextResponse.json({
+            success: true,
+            updatedCount: totalUpdated,
+            message: `Updated ${totalUpdated} AZURE pricing documents with generalizeMeasureUnit`,
+        }, { status: 200 })
+
+
+
+
+
+        // return NextResponse.json(
+        //     // { message: "✅ Country names added successfully based on armRegionName." },
+        //     {
+        //         unitOfMeasure,
+        //         // type,
+        //         // countryName
+        //     },
+        //     { status: 200 }
+        // );
 
 
     } catch (err) {
