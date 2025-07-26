@@ -10,9 +10,6 @@ import {
 import { makeStyles, } from "@mui/styles";
 import { styled } from '@mui/system';
 
-// import light from "../Assets/Images/light.png"
-// import LeftAngle from "../Assets/Icons/LeftAngle.png"
-// import RightAngle from "../Assets/Icons/RightAngle.png"
 
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';

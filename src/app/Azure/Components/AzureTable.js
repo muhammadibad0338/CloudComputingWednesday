@@ -159,13 +159,21 @@ const AzureTable = () => {
                     </Table>
                 </TableContainer>
                 <CustomTablePagination
-                    // data={azure?.data}
-                    loading={loading}
-                    page={azure?.currentPage}
+                    // // data={azure?.data}
+                    // loading={loading}
+                    // page={azure?.currentPage}
+                    // rowsPerPage={azure?.perPage}
+                    // count={azure?.totalItems}
+                    // setPage={(page) => dispatch(setAzurePage(page))}
+                    // setRowsPerPage={(limit) => dispatch(setAzureLimit(limit))}
+                    page={(azure?.currentPage || 1) - 1} // Convert 1-based API value to 0-based
                     rowsPerPage={azure?.perPage}
                     count={azure?.totalItems}
-                    setPage={(page) => dispatch(setAzurePage(page))}
-                    setRowsPerPage={(limit) => dispatch(setAzureLimit(limit))}
+                    setPage={(page) => dispatch(setAzurePage(page + 1))} // Convert 0-based to 1-based for API
+                    setRowsPerPage={(limit) => {
+                        dispatch(setAzureLimit(limit));
+                        dispatch(setAzurePage(1)); // Reset to page 1 when rowsPerPage changes
+                    }}
                 />
             </Paper>
         </>
