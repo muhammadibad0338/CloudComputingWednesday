@@ -54,9 +54,9 @@ export default function Home() {
         <Grid size={{ xs: 12 }} >
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', gap: 2, mt: 2 }}>
             <ComparisionSelect />
-            <LocationSelect />
-            <TypeSelect />
-            <MeasureUnitSelectBox />
+           {comparisionService &&  <LocationSelect />}
+            {comparisionService && <TypeSelect />}
+            {comparisionService && <MeasureUnitSelectBox />}
           </Box>
         </Grid>
         {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2}  >
