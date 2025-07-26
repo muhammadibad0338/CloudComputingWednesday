@@ -204,15 +204,8 @@ export async function PUT(req) {
         const updates = [
             {
                 units: [
-                    "ACU-Hr", "ACU-hour", "CR-Hr", "vCPU-Hour",
-                    "vCPU-Hours", "vCPU-hour", "Hrs"
-                ],
-                value: "Hour"
-            },
-            {
-                units: [
-                    "IOPS-Mo", "MBPS-Mo", "vCPU-Months",
-                    "ACU-Months", "GB-Mo"
+                    "Mo", "Tag-Mo", "Bucket-Mo",
+                    "GB-month", " GB-Mo", "Gigabyte Month"
                 ],
                 value: "Month"
             },
@@ -221,15 +214,11 @@ export async function PUT(req) {
                 value: "GB"
             },
             {
-                units: ["API Calls"],
+                units: ["API Requests", "Requests"],
                 value: "API Calls"
             },
             {
-                units: ["IOs"],
-                value: "IOs"
-            },
-            {
-                units: ["Quantity"],
+                units: ["Jobs", "Objects", "Updates"],
                 value: "Quantity"
             }
         ];
@@ -237,7 +226,7 @@ export async function PUT(req) {
         let totalUpdated = 0;
 
         for (const update of updates) {
-            const result = await RDSPricing.updateMany(
+            const result = await SThreeGlacierPricing.updateMany(
                 {
                     unit: { $in: update.units },
                     $or: [
