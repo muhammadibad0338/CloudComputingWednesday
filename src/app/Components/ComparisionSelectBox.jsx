@@ -11,6 +11,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@mui/material/styles';
 
+import { setAzurePage, setAzureLimit, setPage, setLimit } from '@/lib/slices/filtersSlice';
+
 import { setServiceMainFilter } from '@/lib/slices/filtersSlice';
 
 const ITEM_HEIGHT = 48;
@@ -39,6 +41,13 @@ const ComparisionSelect = () => {
         { name: 'Aws S3 VS Azure Blob Storage', value: 'STORAGE' },
         { name: 'Aws RDS VS Azure SQL Database', value: 'RDBMS' },
     ];
+
+    const resetPagination = () => {
+        dispatch(setPage(1));
+        dispatch(setLimit(100));
+        dispatch(setAzurePage(1));
+        dispatch(setAzureLimit(100));
+    }
 
     return (
         <Select

@@ -18,6 +18,8 @@ import {
 import { makeStyles, } from "@mui/styles";
 import { styled } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux'
+import CustomTablePagination from '@/app/Azure/Components/CustomTablePagination';
+import { setPage, setLimit } from '@/lib/slices/filtersSlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -78,6 +80,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 const RdsTable = () => {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
 
     const { awsRds, loading, error } = useSelector((state) => state.aws);
     const { comparisionService, filterloading, page, limit } = useSelector((state) => state.comparisionFilter);
@@ -157,6 +160,16 @@ const RdsTable = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <CustomTablePagination
+                    page={(awsRds?.currentPage || 1) - 1} // Convert 1-based API value to 0-based
+                    rowsPerPage={awsRds?.perPage}
+                    count={awsRds?.totalItems}
+                    setPage={(page) => dispatch(setPage(page + 1))} // Convert 0-based to 1-based for API
+                    setRowsPerPage={(limit) => {
+                        dispatch(setLimit(limit));
+                        dispatch(setPage(1)); // Reset to page 1 when rowsPerPage changes
+                    }}
+                />
             </Paper>
         </>
     )
