@@ -145,6 +145,7 @@ export async function GET(req) {
             "offerTermCode",
             'countryName',
             'type',
+            'generalizeMeasureUnit',
         ];
 
 

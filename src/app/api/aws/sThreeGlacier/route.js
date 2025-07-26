@@ -139,6 +139,7 @@ export async function GET(req) {
             "rateCode",
             'countryName',
             'type',
+            'generalizeMeasureUnit',
         ];
 
 

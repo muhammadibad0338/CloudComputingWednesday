@@ -7,6 +7,7 @@ const initialState = {
     comparisionService: '',
     countryName: '',
     type: '',
+    generalizeMeasureUnit: '',
     filterloading: false,
     error: null,
     page: 1,
@@ -28,6 +29,9 @@ export const ServicesFilterSlice = createSlice({
         setCountryName: (state, action) => {
             state.countryName = action.payload;
         },
+        setGeneralizeMeasureUnit: (state, action) => {
+            state.generalizeMeasureUnit = action.payload;
+        },
         setType: (state, action) => {
             state.type = action.payload;
         },
@@ -47,5 +51,5 @@ export const ServicesFilterSlice = createSlice({
     },
 });
 
-export const { setServiceMainFilter, resetState, setLoading, setError, setPage, setLimit, setCountryName, setType } = ServicesFilterSlice.actions;
+export const { setServiceMainFilter, resetState, setLoading, setError, setPage, setLimit, setCountryName, setType, setGeneralizeMeasureUnit } = ServicesFilterSlice.actions;
 export default ServicesFilterSlice.reducer;

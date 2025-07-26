@@ -28,7 +28,7 @@ const Page = () => {
 
 
     const { awsSthree, awsSthreeGlacier, loading, error } = useSelector((state) => state.aws);
-    const { comparisionService, filterloading, page, limit, countryName, type } = useSelector((state) => state.comparisionFilter);
+    const { comparisionService, filterloading, page, limit, countryName, type, generalizeMeasureUnit } = useSelector((state) => state.comparisionFilter);
 
     const [paramData, setParamData] = useState({
         'page': page,
@@ -37,10 +37,10 @@ const Page = () => {
     })
 
     useEffect(() => {
-        const mappedData = { page, limit, countryName, type };
+        const mappedData = { page, limit, countryName, type, generalizeMeasureUnit };
         dispatch(getAwsSthreeData(mappedData));
         dispatch(getAwsSthreeGlacierData(mappedData));
-    }, [page, limit, countryName, type]);
+    }, [page, limit, countryName, type, generalizeMeasureUnit]);
 
 
     if (loading || (Object.keys(awsSthree).length == 0 && Object.keys(awsSthreeGlacier).length == 0)) return <div>Loading...</div>;

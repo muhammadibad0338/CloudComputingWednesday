@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ComparisionSelect from './Components/ComparisionSelectBox';
 import LocationSelect from './Components/LocationSelect';
 import TypeSelect from './Components/TypeSelect';
+import MeasureUnitSelectBox from './Components/MeasureUnitSelectBox';
 
 
 const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
@@ -52,8 +53,9 @@ export default function Home() {
         </Grid>
         <Grid size={{ xs: 12 }}   >
           <ComparisionSelect />
-          <LocationSelect/>
+          <LocationSelect />
           <TypeSelect />
+          <MeasureUnitSelectBox />
         </Grid>
         {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2}  >
           <AzurePage />

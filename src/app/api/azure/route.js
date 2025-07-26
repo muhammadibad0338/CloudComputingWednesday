@@ -82,7 +82,8 @@ export async function GET(req) {
             'skuName',
             'unitOfMeasure',
             'type',
-            'countryName'
+            'countryName',
+            'generalizeMeasureUnit',
         ];
 
         const mongoFilter = {};

@@ -150,6 +150,7 @@ export async function GET(req) {
             "endRange",
             'countryName',
             'type',
+            'generalizeMeasureUnit',
         ];
 
         const mongoFilter = {};

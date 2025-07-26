@@ -183,6 +183,7 @@ export async function GET(req) {
             "vmwareproductid",
             "vmwareregion",
             'type',
+            'generalizeMeasureUnit',
         ];
 
 
