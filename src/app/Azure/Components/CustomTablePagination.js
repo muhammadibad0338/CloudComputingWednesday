@@ -58,13 +58,23 @@ const PaginationBtn = styled('button')(({ theme }) => ({
 }));
 
 const CustomTablePagination = ({
-    data,
-    loading,
+    setPage,
+    setRowsPerPage,
     page,
     rowsPerPage,
     count
 }) => {
     const classes = useStyles();
+
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(1);
+    };
 
     return (
         <>
@@ -72,20 +82,12 @@ const CustomTablePagination = ({
                 <TableRow>
                     <TablePagination
                         rowsPerPageOptions={[100, 200, 300]}
+                        component="div"
                         count={count}
                         rowsPerPage={rowsPerPage}
                         page={page}
-                        slotProps={{
-                            select: {
-                                inputProps: {
-                                    'aria-label': 'rows per page',
-                                },
-                                native: true,
-                            },
-                        }}
-                        // onPageChange={handleChangePage}
-                        // onRowsPerPageChange={handleChangeRowsPerPage}
-                        // ActionsComponent={TablePaginationActions}
+                        onPageChange={handleChangePage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </TableRow>
             </TableFooter>

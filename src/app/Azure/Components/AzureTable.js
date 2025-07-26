@@ -20,6 +20,7 @@ import { makeStyles, } from "@mui/styles";
 import { padding, styled, textAlign } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux'
 import CustomTablePagination from './CustomTablePagination';
+import { setAzurePage, setAzureLimit } from '@/lib/slices/filtersSlice';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -84,6 +85,7 @@ const AzureTable = () => {
     const classes = useStyles();
 
     const { azure, loading, error } = useSelector((state) => state.azure);
+    const dispatch = useDispatch();
 
     return (
         <>
@@ -161,7 +163,9 @@ const AzureTable = () => {
                     loading={loading}
                     page={azure?.currentPage}
                     rowsPerPage={azure?.perPage}
-                    count={azure?.totalPages}
+                    count={azure?.totalItems}
+                    setPage={(page) => dispatch(setAzurePage(page))}
+                    setRowsPerPage={(limit) => dispatch(setAzureLimit(limit))}
                 />
             </Paper>
         </>

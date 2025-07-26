@@ -11,7 +11,9 @@ const initialState = {
     filterloading: false,
     error: null,
     page: 1,
-    limit: 100
+    limit: 100,
+    azurePage: 1,
+    azureLimit: 100,
 };
 
 export const ServicesFilterSlice = createSlice({
@@ -41,6 +43,12 @@ export const ServicesFilterSlice = createSlice({
         setLimit: (state, action) => {
             state.limit = action.payload;
         },
+        setAzurePage: (state, action) => {
+            state.azurePage = action.payload;
+        },
+        setAzureLimit: (state, action) => {
+            state.azureLimit = action.payload;
+        },
         setLoading: (state, action) => {
             state.filterloading = action.payload;
         },
@@ -51,5 +59,7 @@ export const ServicesFilterSlice = createSlice({
     },
 });
 
-export const { setServiceMainFilter, resetState, setLoading, setError, setPage, setLimit, setCountryName, setType, setGeneralizeMeasureUnit } = ServicesFilterSlice.actions;
+export const { setServiceMainFilter, resetState, setLoading, setError, setPage, setLimit, setCountryName, setType, setGeneralizeMeasureUnit,
+    setAzurePage, setAzureLimit
+} = ServicesFilterSlice.actions;
 export default ServicesFilterSlice.reducer;
