@@ -226,7 +226,7 @@ export async function PUT(req) {
         let totalUpdated = 0;
 
         for (const update of updates) {
-            const result = await SThreeGlacierPricing.updateMany(
+            const result = await SThreePricing.updateMany(
                 {
                     unit: { $in: update.units },
                     $or: [
