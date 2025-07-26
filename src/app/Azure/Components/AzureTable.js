@@ -13,11 +13,13 @@ import {
     tableCellClasses,
     Checkbox,
     IconButton,
-    Collapse
+    Collapse,
+    TableFooter
 } from '@mui/material';
 import { makeStyles, } from "@mui/styles";
 import { padding, styled, textAlign } from '@mui/system';
 import { useDispatch, useSelector } from 'react-redux'
+import CustomTablePagination from './CustomTablePagination';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,9 +49,9 @@ const useStyles = makeStyles((theme) => ({
         cursor: 'pointer',
         // backgroundImage: 'linear-gradient(rgba(76, 207, 248, 1), rgba(74, 75, 227, 1),rgba(35, 52, 156, 1)) !important',
     },
-    noFound:{
-        padding:'10px 20px',
-        textAlign:'center'
+    noFound: {
+        padding: '10px 20px',
+        textAlign: 'center'
     }
 
 }));
@@ -154,6 +156,13 @@ const AzureTable = () => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <CustomTablePagination
+                    // data={azure?.data}
+                    loading={loading}
+                    page={azure?.currentPage}
+                    rowsPerPage={azure?.perPage}
+                    count={azure?.totalPages}
+                />
             </Paper>
         </>
     )

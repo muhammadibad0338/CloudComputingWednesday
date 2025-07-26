@@ -12,6 +12,7 @@
     "@aws-sdk/client-pricing": "^3.840.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
     "@mui/styles": "^6.5.0",
     "@reduxjs/toolkit": "^2.8.2",
