@@ -6,7 +6,7 @@ import AwsPage from "./Aws/Page"
 
 import { setServiceMainFilter } from '@/lib/slices/filtersSlice';
 
-import { Box, colors, Container, Grid, OutlinedInput, MenuItem, Select, Button } from '@mui/material';
+import { Box, colors, Container, Grid, OutlinedInput, MenuItem, Select, Button, Typography } from '@mui/material';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import { display, flexWrap, justifyContent, styled } from '@mui/system';
 
@@ -28,6 +28,25 @@ const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
 
 const AWSChart = () => {
   const { azure, loading, } = useSelector((state) => state.aws);
+}
+
+
+const AzureChart = () => {
+  const { azure, loading, } = useSelector((state) => state.azure);
+  const { countryName } = useSelector((state) => state.comparisionFilter);
+  return (
+    <>
+      {(!loading && azure?.data?.length > 0) && <div>
+        <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
+          Azure Graph Pricing by Region
+        </Typography>
+        <RegionPriceChart
+          regions={[...new Set(azure?.data?.map(item => item.countryName))]}
+          prices={azure?.data?.map(item => parseFloat(item.unitPrice))}
+        />
+      </div>}
+    </>
+  )
 }
 
 
@@ -83,12 +102,11 @@ export default function Home() {
         {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2} mb={2} >
           <AwsPage />
         </Grid>}
-        {countryName.trim().length == 0 && <Grid size={{ xs: 12 }} >
-          {(!loading && azure?.data?.length > 0) && <RegionPriceChart
-            regions={[...new Set(azure?.data?.map(item => item.countryName))]}
-            prices={azure?.data?.map(item => parseFloat(item.unitPrice))}
-          />}
+        {countryName.trim().length == 0 && <Grid size={{ xs: 12 }} mt={2} mb={2} >
+          <AzureChart />
+          <AWSChart />
         </Grid>}
+
       </Grid>
     </Container>
   );
