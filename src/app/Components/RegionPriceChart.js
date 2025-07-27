@@ -23,7 +23,7 @@ ChartJS.register(
 
 const RegionPriceChart = ({ regions, prices }) => {
 
-   
+
 
 
     const config = {
@@ -59,7 +59,11 @@ const RegionPriceChart = ({ regions, prices }) => {
         },
     };
 
-    return <Line data={config} options={options} />;
+    return (
+        <div style={{ width: '800px', height: '500px', margin: '0 auto' }}>
+            <Line data={config} options={options} />
+        </div>
+    );
 };
 
 export default RegionPriceChart;
