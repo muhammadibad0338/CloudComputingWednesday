@@ -8,6 +8,7 @@ import { makeStyles } from "@mui/styles";
 import { styled } from '@mui/system';
 import AzureTable from './Components/AzureTable';
 import SearchIcon from '@mui/icons-material/Search';
+import RegionPriceChart from '../Components/RegionPriceChart';
 
 
 
@@ -87,7 +88,7 @@ export default function AzurePage() {
     return (
         <MainCntnr container  >
             <Grid size={{ xs: 12 }} mb={2} >
-                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center',}}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', }}>
                     <Typography variant='h4' >Azure Pricing </Typography>
                     <OutlinedInput
                         className={classes.searchBar}
@@ -97,6 +98,12 @@ export default function AzurePage() {
                         placeholder='Search Product Name, SKU ID...'
                     />
                 </Box>
+            </Grid>
+            <Grid size={{ xs: 12 }} mb={2} >
+                {/* <RegionPriceChart
+                    regions={[...new Set(azure?.data?.map(item => item.countryName))]}
+                    prices={azure?.data?.map(item => parseFloat(item.unitPrice))}
+                /> */}
             </Grid>
             <Grid size={{ xs: 12 }} >
                 <AzureTable />

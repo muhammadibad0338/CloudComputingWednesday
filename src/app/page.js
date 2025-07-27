@@ -18,6 +18,7 @@ import MeasureUnitSelectBox from './Components/MeasureUnitSelectBox';
 import RestoreIcon from '@mui/icons-material/Restore';
 
 import { setCountryName, setType, setGeneralizeMeasureUnit } from '@/lib/slices/filtersSlice';
+import RegionPriceChart from './Components/RegionPriceChart';
 
 
 const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
@@ -25,12 +26,18 @@ const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
 }));
 
 
+const AWSChart = () => {
+  const { azure, loading, } = useSelector((state) => state.aws);
+}
+
 
 
 export default function Home() {
 
   const dispatch = useDispatch();
-  const { comparisionService, loading, error } = useSelector((state) => state.comparisionFilter);
+  const { comparisionService, countryName } = useSelector((state) => state.comparisionFilter);
+
+  const { azure, loading, } = useSelector((state) => state.azure);
 
   const [isSnackbarOpen, setIsSnackbarOpen] = useState(true)
 
@@ -75,6 +82,12 @@ export default function Home() {
         </Grid>}
         {comparisionService.trim().length != 0 && <Grid size={{ xs: 12 }} mt={2} mb={2} >
           <AwsPage />
+        </Grid>}
+        {countryName.trim().length == 0 && <Grid size={{ xs: 12 }} >
+          {(!loading && azure?.data?.length > 0) && <RegionPriceChart
+            regions={[...new Set(azure?.data?.map(item => item.countryName))]}
+            prices={azure?.data?.map(item => parseFloat(item.unitPrice))}
+          />}
         </Grid>}
       </Grid>
     </Container>
