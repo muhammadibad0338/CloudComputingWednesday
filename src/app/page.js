@@ -27,7 +27,7 @@ const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
 
 
 const AWSChart = () => {
-  const { azure, loading, } = useSelector((state) => state.aws);
+  const { awsVmware, awsRds, awsSthree, awsSthreeGlacier, loading, } = useSelector((state) => state.aws);
 }
 
 

@@ -77,7 +77,19 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
+function simplifyMeterName(meterName) {
+    const name = meterName.toLowerCase(); // Make comparison case-insensitive
 
+    if (name.includes("hot")) {
+        return "HOT";
+    } else if (name.includes("cool") || name.includes("cold")) {
+        return "COOL";
+    } else if (name.includes("archive")) {
+        return "Archive";
+    } else {
+        return meterName; // Return the original name if no match
+    }
+}
 
 
 const AzureTable = () => {
@@ -85,6 +97,7 @@ const AzureTable = () => {
     const classes = useStyles();
 
     const { azure, loading, error } = useSelector((state) => state.azure);
+    const { comparisionService } = useSelector((state) => state.comparisionFilter);
     const dispatch = useDispatch();
 
     return (
@@ -109,6 +122,9 @@ const AzureTable = () => {
                                 <TableCell className={classes.tableCell}>
                                     Product Name
                                 </TableCell>
+                                {comparisionService.trim() == 'STORAGE' && <TableCell className={classes.tableCell}>
+                                    Storage Tier
+                                </TableCell>}
                                 <TableCell className={classes.tableCell}>
                                     Type
                                 </TableCell>
@@ -142,6 +158,9 @@ const AzureTable = () => {
                                                 <TableCell>
                                                     <Typography className={classes.tableCellBody} >{service?.productName}</Typography>
                                                 </TableCell>
+                                                {comparisionService.trim() == 'STORAGE' && <TableCell>
+                                                    <Typography className={classes.tableCellBody} >{simplifyMeterName(service?.meterName)}</Typography>
+                                                </TableCell>}
                                                 <TableCell>
                                                     <Typography className={classes.tableCellBody} >{service?.type}</Typography>
                                                 </TableCell>
