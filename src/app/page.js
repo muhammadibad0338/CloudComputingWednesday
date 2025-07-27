@@ -28,6 +28,27 @@ const WarningSnackbar = styled(Snackbar)(({ theme }) => ({
 
 const AWSChart = () => {
   const { awsVmware, awsRds, awsSthree, awsSthreeGlacier, loading, } = useSelector((state) => state.aws);
+  const { countryName, comparisionService } = useSelector((state) => state.comparisionFilter);
+
+  let AwsServiceData = {
+    'VMWARE': awsVmware,
+    'RDBMS': awsRds,
+    'STORAGE': awsSthree,
+  }
+
+  return (
+    <>
+      {(!loading && AwsServiceData[comparisionService]?.data?.length > 0) && <div>
+        <Typography variant="h5" sx={{ mb: 2, textAlign: 'center' }}>
+          AWS Graph Pricing by Region
+        </Typography>
+        <RegionPriceChart
+          regions={[...new Set(AwsServiceData[comparisionService]?.data?.map(item => item.countryName))]}
+          prices={AwsServiceData[comparisionService]?.data?.map(item => parseFloat(item.pricePerUnitUSD))}
+        />
+      </div>}
+    </>
+  )
 }
 
 
